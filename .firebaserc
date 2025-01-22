@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "default": "ante-test-3828f",
+    "dev": "ante-test-3828f"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
+}

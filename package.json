@@ -33,7 +33,7 @@
     "web3": "^4.13.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-app-rewired start",
     "start:local": "env-cmd -f .env.development npm start",
     "build:dev": "env-cmd -f .env.development npm run build && firebase deploy -P dev",
     "build:prod": "env-cmd -f .env.production npm run build && firebase deploy -P prod",
@@ -58,5 +58,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "react-app-rewired": "2.2.1"
   }
 }

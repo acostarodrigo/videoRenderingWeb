@@ -1,26 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Window as KeplrWindow } from "@keplr-wallet/types";
-import { Button, Container } from "@mui/material";
+import { Button, Container, Typography } from "@mui/material";
 import { TopBar } from "components/TopBar";
 import { Footer } from "components/Footer";
-import { VideoRenderingStargateClient } from "../../cosmosClient/dist/stargateClient";
 import { getSigningClient } from "utils/web3";
+import { useSelector } from "react-redux";
+import VideoRenderingTaskCard from "components/VideoRenderingTaskCard";
+import { getVideoRenderingTasks } from "utils/videoRendering";
 
 export const Home = () => {
-  const [videoRenderingTask, setVideoRenderingTask] = useState({});
-  const getTask = async () => {
-    const cosmosClient = await VideoRenderingStargateClient.connect(
-      process.env.RPC_URL
-    );
-    const chainId = await cosmosClient.getChainId();
-    console.log("chainId", chainId);
-    const queryClient = cosmosClient.videoRenderingQueryClient.videoRendering;
-    console.log(queryClient);
-    const result = await queryClient.GetVideoRenderingTask(1);
-    setVideoRenderingTask(result);
-  };
+  const { tasks } = useSelector((state) => state.videoRendering);
+
   useEffect(() => {
-    getTask();
+    getVideoRenderingTasks();
   }, []);
 
   const handleCreateTask = async () => {
@@ -52,7 +43,16 @@ export const Home = () => {
     <>
       <Container>
         <TopBar />
-        Jasmy task: cid {videoRenderingTask.cid}
+        {tasks?.length > 0 ? (
+          <>
+            {tasks.map((task, index) => (
+              <VideoRenderingTaskCard task={task} key={index} />
+            ))}
+          </>
+        ) : (
+          <Typography variant="h5"> No tasks available</Typography>
+        )}
+
         <Button onClick={handleCreateTask}>Create task</Button>
         <Footer />
       </Container>

@@ -2,6 +2,7 @@ import React from "react";
 import logo from "images/logo.png";
 import { Button, Grid, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import { ConnectWalletButton } from "./ConnectWalletButton";
 
 export const TopBar = () => {
   return (
@@ -27,7 +28,9 @@ export const TopBar = () => {
       <Grid item>
         <Typography variant="h4">Janction Video Rendering</Typography>
       </Grid>
-      <Grid item></Grid>
+      <Grid item>
+        <ConnectWalletButton />
+      </Grid>
     </Grid>
   );
 };

@@ -3,8 +3,11 @@ import logo from "images/logo.png";
 import { Button, Grid, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { ConnectWalletButton } from "./ConnectWalletButton";
+import { useSelector } from "react-redux";
+import { CreateTaskButton } from "./CreateTaskButton";
 
 export const TopBar = () => {
+  const { address } = useSelector((state) => state.blockchain);
   return (
     <Grid
       container
@@ -29,7 +32,7 @@ export const TopBar = () => {
         <Typography variant="h4">Janction Video Rendering</Typography>
       </Grid>
       <Grid item>
-        <ConnectWalletButton />
+        {address ? <CreateTaskButton /> : <ConnectWalletButton />}
       </Grid>
     </Grid>
   );

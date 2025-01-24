@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { setAddress, setClient } from "state/blockchain";
+import { setAddress } from "state/blockchain";
 import { showSnackbar } from "state/ui";
 import { shortenAddress } from "utils/misc";
 import { getSigningClient } from "utils/web3";
@@ -24,9 +24,8 @@ export const ConnectWalletButton = () => {
       );
       return;
     }
-    const [creator, client] = await getSigningClient(keplr);
+    const [creator] = await getSigningClient(keplr);
     dispatch(setAddress(creator));
-    dispatch(setClient(client));
   };
   return (
     <Button

@@ -53,8 +53,8 @@ export const CreateTaskButton = () => {
       const response = await client.createVideoRenderingTask(
         creator,
         "QmYC32RNLAMPRa8RGWEEHJWMcrnMzJ2Hq8xByupeFPUNtn",
-        1,
-        4,
+        0,
+        10,
         2,
         100,
         "auto"

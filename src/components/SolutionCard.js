@@ -1,12 +1,14 @@
 import { Button, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { IPFSDownload } from "utils/videoRendering";
 import { ConnectWalletButton } from "./ConnectWalletButton";
+import { hideBackdrop, showBackdrop, showSnackbar } from "state/ui";
 
 export const SolutionCard = ({ task }) => {
   const [cids, setCids] = useState([]);
   const { address } = useSelector((state) => state.blockchain);
+  const dispatch = useDispatch();
 
   const getCids = () => {
     const result = [];
@@ -24,8 +26,19 @@ export const SolutionCard = ({ task }) => {
 
   const handleDownload = async () => {
     try {
+      dispatch(showBackdrop());
       await IPFSDownload(cids);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+      dispatch(
+        showSnackbar({
+          severity: "error",
+          message: "Unable to download file. Please try again",
+        })
+      );
+    } finally {
+      dispatch(hideBackdrop());
+    }
   };
   return (
     <>

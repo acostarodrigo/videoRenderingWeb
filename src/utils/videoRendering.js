@@ -38,15 +38,21 @@ export const getVideoRenderingTasks = async () => {
 
 export const IPFSDownload = async (cids) => {
   const zip = new JSZip();
-  const ipfs = create({ url: "/ip4/127.0.0.1/tcp/5001" }); // Replace with your IPFS endpoint if needed
+  const ipfs = create({ url: "/ip4/127.0.0.1/tcp/5001" }); // Adjust if needed
 
-  for (const cid of cids) {
-    const chunks = [];
-    for await (const chunk of ipfs.cat(cid)) {
-      chunks.push(chunk);
+  for (const dirCid of cids) {
+    for await (const file of ipfs.ls(dirCid)) {
+      if (file.type !== "file") continue; // Skip directories, only process files
+
+      const fileChunks = [];
+      for await (const chunk of ipfs.cat(file.cid)) {
+        fileChunks.push(chunk);
+      }
+      const fileContent = new Uint8Array(Buffer.concat(fileChunks));
+
+      // Add only the filename to the ZIP (ignoring IPFS directory structure)
+      zip.file(file.name, fileContent);
     }
-    const fileContent = new Uint8Array(Buffer.concat(chunks));
-    zip.file(cid, fileContent); // Add file to ZIP, use CID as filename
   }
 
   const zipBlob = await zip.generateAsync({ type: "blob" });

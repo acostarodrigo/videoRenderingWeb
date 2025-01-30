@@ -7,14 +7,19 @@ import { hideBackdrop, showBackdrop, showSnackbar } from "state/ui";
 
 export const SolutionCard = ({ task }) => {
   const [cids, setCids] = useState([]);
+  const [amount, setAmount] = useState(0);
   const { address } = useSelector((state) => state.blockchain);
   const dispatch = useDispatch();
 
   const getCids = () => {
     const result = [];
     for (const thread of task.threads) {
+      console.log(thread);
       if (thread.solution?.files.length > 0) {
         result.push(...thread.solution?.files);
+        setAmount(
+          (current) => current + (thread.endFrame - thread.startFrame) + 1
+        );
       }
     }
 
@@ -44,7 +49,7 @@ export const SolutionCard = ({ task }) => {
     <>
       <Typography variant="h5" textAlign={"center"}>
         {" "}
-        {cids.length} files ready to download
+        {amount} files ready to download
       </Typography>
       {address ? (
         <Button

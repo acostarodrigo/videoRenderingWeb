@@ -6,15 +6,12 @@ export const getSigningClient = async (keplr) => {
   await keplr.enable(videoRenderingChainId);
   const offlineSigner = keplr.getOfflineSigner(videoRenderingChainId);
   const creator = (await offlineSigner.getAccounts())[0].address;
-  console.log("====================================");
-  console.log("creator", creator);
-  console.log("====================================");
   const signingClient =
     await VideoRenderingSigningStargateClient.connectWithSigner(
-      "http://127.0.0.1:26657",
+      process.env.RPC_URL,
       offlineSigner,
       {
-        gasPrice: GasPrice.fromString("1mini"),
+        gasPrice: GasPrice.fromString("0jct"),
       }
     );
   return [creator, signingClient];
@@ -26,44 +23,38 @@ export const getChainInfo = () => {
     chainId: videoRenderingChainId,
     chainName: "Janction",
     rpc: process.env.RPC_URL,
-    rest: "http://127.0.0.1:1317",
+    rest: process.env.REST_URL,
     bip44: {
-      coinType: 118,
+      coinType: 678,
     },
     bech32Config: {
-      bech32PrefixAccAddr: "mini",
-      bech32PrefixAccPub: "mini" + "pub",
-      bech32PrefixValAddr: "mini" + "valoper",
-      bech32PrefixValPub: "mini" + "valoperpub",
-      bech32PrefixConsAddr: "mini" + "valcons",
-      bech32PrefixConsPub: "mini" + "valconspub",
+      bech32PrefixAccAddr: "janction",
+      bech32PrefixAccPub: "janction" + "pub",
+      bech32PrefixValAddr: "janction" + "valoper",
+      bech32PrefixValPub: "janction" + "valoperpub",
+      bech32PrefixConsAddr: "janction" + "valcons",
+      bech32PrefixConsPub: "janction" + "valconspub",
     },
     currencies: [
       {
-        coinDenom: "MINI",
-        coinMinimalDenom: "mini",
-        coinDecimals: 0,
+        coinDenom: "JCT",
+        coinMinimalDenom: "JCT",
+        coinDecimals: 6,
       },
     ],
     feeCurrencies: [
       {
-        coinDenom: "MINI",
-        coinMinimalDenom: "mini",
-        coinDecimals: 0,
-        coinGeckoId: "mini",
+        coinDenom: "JCT",
+        coinMinimalDenom: "jct",
+        coinDecimals: 6,
+        coinGeckoId: "jct",
         gasPriceStep: {
-          low: 1,
+          low: 0,
           average: 1,
           high: 1,
         },
       },
     ],
-    stakeCurrency: {
-      coinDenom: "MINI",
-      coinMinimalDenom: "mini",
-      coinDecimals: 0,
-      coinGeckoId: "mini",
-    },
     coinType: 118,
     features: [],
   };

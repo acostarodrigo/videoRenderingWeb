@@ -6,12 +6,12 @@ module.exports = function override(config, env) {
     new webpack.ProvidePlugin({
       Buffer: ["buffer", "Buffer"],
     }),
-    new webpack.EnvironmentPlugin(["RPC_URL"])
+    new webpack.EnvironmentPlugin(["RPC_URL", "REST_URL"])
   );
   config.resolve.fallback = {
     buffer: false,
     crypto: false,
-    events: false,
+    events: true,
     path: false,
     stream: false,
     string_decoder: false,

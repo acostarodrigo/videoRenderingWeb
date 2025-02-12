@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Grid, LinearProgress, Typography } from "@mui/material";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { shortenAddress } from "utils/misc";
 import { isMobile } from "react-device-detect";
-export const WorkerCard = ({ worker, action }) => {
+import { getWorkerLogs } from "utils/videoRendering";
+import { WorkerLog } from "./WorkerLog";
+export const WorkerCard = ({ worker, action, open, setOpen, threadId }) => {
   const getAction = () => {
     switch (action) {
       case "working":
@@ -76,15 +78,26 @@ export const WorkerCard = ({ worker, action }) => {
             <Grid item>
               <Typography>Verification completed</Typography>
             </Grid>
+            {open && (
+              <WorkerLog
+                worker={worker}
+                open={open}
+                setOpen={setOpen}
+                threadId={threadId}
+              />
+            )}
           </Grid>
         );
     }
   };
+
   return (
-    <Grid container direction={"row"}>
-      <Grid item>Worker {isMobile ? shortenAddress(worker) : worker}</Grid>
-      <Grid>{getAction()}</Grid>
-    </Grid>
+    <>
+      <Grid container direction={"row"}>
+        <Grid item>Worker {isMobile ? shortenAddress(worker) : worker}</Grid>
+        <Grid>{getAction()}</Grid>
+      </Grid>
+    </>
   );
 };
 

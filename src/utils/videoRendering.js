@@ -12,7 +12,6 @@ export const getVideoRenderingTasks = async () => {
       process.env.RPC_URL
     );
     const queryClient = cosmosClient.videoRenderingQueryClient.videoRendering;
-
     const result = [];
     for (let i = 1; i < 100; i++) {
       const task = await queryClient.GetVideoRenderingTask(i);
@@ -57,4 +56,18 @@ export const IPFSDownload = async (cids) => {
 
   const zipBlob = await zip.generateAsync({ type: "blob" });
   saveAs(zipBlob, "files.zip"); // Trigger download
+};
+
+export const getWorkerLogs = async (worker, threadId) => {
+  const cosmosClient = await VideoRenderingStargateClient.connect(
+    process.env.RPC_URL
+  );
+  const queryClient = cosmosClient.videoRenderingQueryClient.videoRendering;
+  const response = await queryClient.GetWorker(worker);
+  const { publicIp } = response;
+  const url = `http://${publicIp}:26657`;
+  const cosmos = await VideoRenderingStargateClient.connect(url);
+  const query = cosmos.videoRenderingQueryClient.videoRendering;
+  const result = await query.GetVideoRenderingLog(threadId);
+  return result;
 };

@@ -17,7 +17,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "alchemy-sdk": "^3.4.3",
-    "axios": "^1.7.4",
+    "axios": "^1.7.9",
     "env-cmd": "^10.1.0",
     "ethers": "^6.13.2",
     "file-saver": "^2.0.5",

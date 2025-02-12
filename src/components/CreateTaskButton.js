@@ -53,8 +53,8 @@ export const CreateTaskButton = () => {
       const response = await client.createVideoRenderingTask(
         creator,
         "QmYC32RNLAMPRa8RGWEEHJWMcrnMzJ2Hq8xByupeFPUNtn",
-        0,
-        10,
+        1,
+        8,
         2,
         100,
         "auto"
@@ -138,7 +138,7 @@ export const CreateTaskButton = () => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  label="Amount of nodes"
+                  label="Amount of computers"
                   variant="standard"
                   fullWidth
                 />

@@ -25,7 +25,7 @@ export const getChainInfo = () => {
     rpc: process.env.RPC_URL,
     rest: process.env.REST_URL,
     bip44: {
-      coinType: 678,
+      coinType: 118,
     },
     bech32Config: {
       bech32PrefixAccAddr: "janction",
@@ -38,13 +38,13 @@ export const getChainInfo = () => {
     currencies: [
       {
         coinDenom: "JCT",
-        coinMinimalDenom: "JCT",
+        coinMinimalDenom: "jct",
         coinDecimals: 6,
       },
     ],
     feeCurrencies: [
       {
-        coinDenom: "JCT",
+        coinDenom: "jct",
         coinMinimalDenom: "jct",
         coinDecimals: 6,
         coinGeckoId: "jct",

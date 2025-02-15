@@ -15,12 +15,10 @@ export const SolutionCard = ({ task }) => {
     const result = [];
     for (const thread of task.threads) {
       console.log(thread);
-      if (thread.solution?.files.length > 0) {
-        result.push(...thread.solution?.files);
-        setAmount(
-          (current) => current + (thread.endFrame - thread.startFrame) + 1
-        );
-      }
+      result.push(thread.solution?.files);
+      setAmount(
+        (current) => current + (thread.endFrame - thread.startFrame) + 1
+      );
     }
 
     setCids(result);

@@ -40,6 +40,9 @@ export const IPFSDownload = async (cids) => {
   const ipfs = create({ url: "/ip4/127.0.0.1/tcp/5001" }); // Adjust if needed
 
   for (const dirCid of cids) {
+    console.log("====================================");
+    console.log("downloading ", dirCid);
+    console.log("====================================");
     for await (const file of ipfs.ls(dirCid)) {
       if (file.type !== "file") continue; // Skip directories, only process files
 

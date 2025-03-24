@@ -25,10 +25,10 @@ export const VideoRenderingThreadCard = ({ thread }) => {
 
   const calculateAction = (worker) => {
     if (thread.solution && thread.solution.proposedBy == worker) {
-      return "winner";
+      return ["winner", thread.solution.hashes.length];
     }
 
-    if (!thread.solution) return "working";
+    if (!thread.solution) return ["working", 0];
 
     if (
       thread.validations &&
@@ -36,7 +36,7 @@ export const VideoRenderingThreadCard = ({ thread }) => {
       !thread.completed
     ) {
       for (const validation of thread.validations) {
-        if (validation.validator == worker) return "verifying";
+        if (validation.validator == worker) return ["verifying", 0];
       }
     }
 
@@ -46,7 +46,8 @@ export const VideoRenderingThreadCard = ({ thread }) => {
       thread.completed
     ) {
       for (const validation of thread.validations) {
-        if (validation.validator == worker) return "Verified";
+        if (validation.validator == worker)
+          return ["Verified", validation.amountFiles.low];
       }
     }
   };
@@ -57,7 +58,6 @@ export const VideoRenderingThreadCard = ({ thread }) => {
       direction={"column"}
       alignItems={"flex-start"}
       justifyContent={"center"}
-      width={"100%"}
     >
       <Grid item xs={12}>
         <Box display={"flex"} alignItems={"center"}>
@@ -71,10 +71,10 @@ export const VideoRenderingThreadCard = ({ thread }) => {
           )}
         </Box>
       </Grid>
-      <Grid item xs={12}>
-        <List style={{ width: "100%" }}>
+      <Grid item>
+        <List>
           {thread.workers.map((worker, index) => (
-            <ListItem key={index} disablePadding>
+            <ListItem key={index}>
               <ListItemButton
                 onClick={handleClickOpen}
                 sx={{ pointerEvents: open ? "none" : "auto" }}
@@ -85,7 +85,7 @@ export const VideoRenderingThreadCard = ({ thread }) => {
                 <ListItemText style={{ textAlign: "center", marginRight: 15 }}>
                   <WorkerCard
                     worker={worker}
-                    action={calculateAction(worker)}
+                    result={calculateAction(worker)}
                     open={open}
                     setOpen={setOpen}
                     threadId={thread.threadId}

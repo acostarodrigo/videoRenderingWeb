@@ -1,24 +1,43 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Grid, LinearProgress, Typography } from "@mui/material";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { shortenAddress } from "utils/misc";
-import { isMobile } from "react-device-detect";
-import { getWorkerLogs } from "utils/videoRendering";
 import { WorkerLog } from "./WorkerLog";
-export const WorkerCard = ({ worker, action, open, setOpen, threadId }) => {
+import BigNumber from "bignumber.js";
+import { VideoRenderingStargateClient } from "cosmosClient/dist/stargateClient";
+
+export const WorkerCard = ({ worker, result, open, setOpen, threadId }) => {
+  console.log("====================================");
+  console.log(result);
+  console.log("====================================");
+  const [reputation, setReputation] = useState({});
+  const getReputation = async () => {
+    const cosmosClient = await VideoRenderingStargateClient.connect(
+      process.env.RPC_URL
+    );
+    const queryClient = cosmosClient.videoRenderingQueryClient.videoRendering;
+    const response = await queryClient.GetWorker(worker);
+    setReputation(response.reputation);
+  };
+  useEffect(() => {
+    getReputation();
+  }, []);
+
   const getAction = () => {
+    if (!result) return <></>;
+    const [action, files] = result;
     switch (action) {
       case "working":
         return (
           <Grid
             container
             direction={"row"}
-            justifyContent={"center"}
+            justifyContent={"flex-start"}
             alignItems={"center"}
-            spacing={2}
-            marginLeft={2}
+            // spacing={2}
+            // marginLeft={2}
           >
             <Grid item>
               Working
@@ -31,10 +50,10 @@ export const WorkerCard = ({ worker, action, open, setOpen, threadId }) => {
           <Grid
             container
             direction={"row"}
-            justifyContent={"center"}
+            justifyContent={"flex-start"}
             alignItems={"center"}
-            spacing={2}
-            marginLeft={2}
+            // spacing={2}
+            // marginLeft={2}
           >
             <Grid item>
               <LinearProgress color="success" />
@@ -49,16 +68,16 @@ export const WorkerCard = ({ worker, action, open, setOpen, threadId }) => {
           <Grid
             container
             direction={"row"}
-            justifyContent={"center"}
+            justifyContent={"flex-start"}
             alignItems={"center"}
-            spacing={2}
-            marginLeft={2}
+            // spacing={2}
+            // marginLeft={2}
           >
             <Grid item>
               <EmojiEventsIcon color="success" />
             </Grid>
             <Grid item>
-              <Typography>Winner</Typography>
+              <Typography>Winner - {files} files</Typography>
             </Grid>
           </Grid>
         );
@@ -67,25 +86,15 @@ export const WorkerCard = ({ worker, action, open, setOpen, threadId }) => {
           <Grid
             container
             direction={"row"}
-            justifyContent={"center"}
-            alignItems={"center"}
-            spacing={2}
-            marginLeft={2}
+            // justifyContent={"flex-start"}
+            // alignItems={"center"}
           >
             <Grid item>
               <CheckCircleOutlineIcon />
             </Grid>
             <Grid item>
-              <Typography>Verification completed</Typography>
+              <Typography>Verification completed - {files} files</Typography>
             </Grid>
-            {open && (
-              <WorkerLog
-                worker={worker}
-                open={open}
-                setOpen={setOpen}
-                threadId={threadId}
-              />
-            )}
           </Grid>
         );
     }
@@ -93,10 +102,34 @@ export const WorkerCard = ({ worker, action, open, setOpen, threadId }) => {
 
   return (
     <>
-      <Grid container direction={"row"}>
-        <Grid item>Worker {isMobile ? shortenAddress(worker) : worker}</Grid>
-        <Grid>{getAction()}</Grid>
+      <Grid
+        container
+        direction={"row"}
+        // justifyContent={"space-between"}
+        // alignItems={"center"}
+        spacing={4}
+      >
+        <Grid item>
+          Worker: <b>{shortenAddress(worker)}</b>
+        </Grid>
+        <Grid item justifyContent={"flex-start"}>
+          {getAction()}
+        </Grid>
+        <Grid item justifyContent={"flex-end"}>
+          $ Total Winnings:{" "}
+          {BigNumber(reputation.winnings?.amount || 0)
+            .dividedBy(1e6)
+            .toFormat(3)}
+        </Grid>
       </Grid>
+      {open && (
+        <WorkerLog
+          worker={worker}
+          open={open}
+          setOpen={setOpen}
+          threadId={threadId}
+        />
+      )}
     </>
   );
 };

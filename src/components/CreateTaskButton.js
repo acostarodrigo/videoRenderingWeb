@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -8,19 +8,18 @@ import {
   DialogContent,
   DialogTitle,
   FormControl,
-  FormHelperText,
   Grid,
-  Input,
-  InputLabel,
   TextField,
   Typography,
 } from "@mui/material";
+import { NumericFormat } from "react-number-format";
 import { useDispatch, useSelector } from "react-redux";
 import { hideBackdrop, showBackdrop, showSnackbar } from "state/ui";
 import { shortenAddress } from "utils/misc";
 import { getSigningClient } from "utils/web3";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
+
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",
@@ -36,7 +35,15 @@ const VisuallyHiddenInput = styled("input")({
 export const CreateTaskButton = () => {
   const { address } = useSelector((state) => state.blockchain);
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState({});
+  const [isDisabled, setIsDisabled] = useState(true);
+  const initialState = {
+    cid: "QmYC32RNLAMPRa8RGWEEHJWMcrnMzJ2Hq8xByupeFPUNtn",
+    startFrame: 0,
+    endFrame: 0,
+    threads: 0,
+    reward: 0.0,
+  };
+  const [data, setData] = useState(initialState);
   const dispatch = useDispatch();
 
   const handleCreateTask = async () => {
@@ -52,13 +59,16 @@ export const CreateTaskButton = () => {
       const [creator, client] = await getSigningClient(keplr);
       const response = await client.createVideoRenderingTask(
         creator,
-        "QmYC32RNLAMPRa8RGWEEHJWMcrnMzJ2Hq8xByupeFPUNtn",
-        1,
-        8,
-        2,
-        100,
+        data.cid,
+        data.startFrame,
+        data.endFrame,
+        data.threads,
+        data.reward.toString().replace(".", ""),
         "auto"
       );
+      console.log("====================================");
+      console.log("response", response);
+      console.log("====================================");
       dispatch(
         showSnackbar({
           severity: "success",
@@ -79,8 +89,36 @@ export const CreateTaskButton = () => {
   };
 
   const handleCancel = () => {
+    setData(initialState);
     setOpen(false);
   };
+
+  const validateData = () => {
+    if (data.startFrame < 0) {
+      setIsDisabled(true);
+      return;
+    }
+
+    if (data.endFrame <= 0 && data.endFrame < data.startFrame) {
+      setIsDisabled(true);
+      return;
+    }
+
+    if (data.threads <= 1) {
+      setIsDisabled(true);
+      return;
+    }
+
+    if (data.reward <= 0) {
+      setIsDisabled(true);
+      return;
+    }
+
+    setIsDisabled(false);
+  };
+  useEffect(() => {
+    validateData();
+  }, [data]);
 
   return (
     <>
@@ -131,20 +169,65 @@ export const CreateTaskButton = () => {
                 </Button>
               </Grid>
               <Grid item xs={12} width={"100%"}>
-                <TextField label="Start frame" variant="standard" fullWidth />
+                <TextField
+                  label="Start frame"
+                  variant="standard"
+                  fullWidth
+                  value={data.startFrame}
+                  onChange={(e) =>
+                    setData((current) => ({
+                      ...current,
+                      startFrame: e.target.value,
+                    }))
+                  }
+                />
               </Grid>
               <Grid item xs={12}>
-                <TextField label="End frame" variant="standard" fullWidth />
+                <TextField
+                  label="End frame"
+                  variant="standard"
+                  fullWidth
+                  value={data.endFrame}
+                  onChange={(e) =>
+                    setData((current) => ({
+                      ...current,
+                      endFrame: e.target.value,
+                    }))
+                  }
+                />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   label="Amount of computers"
                   variant="standard"
                   fullWidth
+                  value={data.threads}
+                  onChange={(e) =>
+                    setData((current) => ({
+                      ...current,
+                      threads: e.target.value,
+                    }))
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField label="Reward" variant="standard" fullWidth />
+                <NumericFormat
+                  value={data.reward}
+                  onChange={(e) =>
+                    setData((current) => ({
+                      ...current,
+                      reward: e.target.value,
+                    }))
+                  }
+                  customInput={TextField}
+                  decimalScale={6}
+                  fixedDecimalScale
+                  valueIsNumericString
+                  placeholder="JCT Amount"
+                  // prefix="JCT "
+                  variant="standard"
+                  label="reward in JCT"
+                />
               </Grid>
             </Grid>
           </FormControl>
@@ -158,6 +241,7 @@ export const CreateTaskButton = () => {
             fullWidth
             color="error"
             onClick={handleCreateTask}
+            disabled={isDisabled}
           >
             Create
           </Button>

@@ -5,13 +5,14 @@ export const getSigningClient = async (keplr) => {
   await keplr.experimentalSuggestChain(getChainInfo());
   await keplr.enable(videoRenderingChainId);
   const offlineSigner = keplr.getOfflineSigner(videoRenderingChainId);
+  const accounts = await offlineSigner.getAccounts();
   const creator = (await offlineSigner.getAccounts())[0].address;
   const signingClient =
     await VideoRenderingSigningStargateClient.connectWithSigner(
       process.env.RPC_URL,
       offlineSigner,
       {
-        gasPrice: GasPrice.fromString("0jct"),
+        gasPrice: GasPrice.fromString("1jct"),
       }
     );
   return [creator, signingClient];
@@ -49,7 +50,7 @@ export const getChainInfo = () => {
         coinDecimals: 6,
         coinGeckoId: "jct",
         gasPriceStep: {
-          low: 0,
+          low: 1,
           average: 1,
           high: 1,
         },

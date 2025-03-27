@@ -17,7 +17,7 @@ export const SolutionCard = ({ task }) => {
       console.log(thread);
       result.push(thread.solution?.files);
       setAmount(
-        (current) => current + (thread.endFrame - thread.startFrame) + 1
+        (current) => current + (thread.endFrame.low - thread.startFrame.low) + 1
       );
     }
 

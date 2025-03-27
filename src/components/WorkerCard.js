@@ -19,6 +19,7 @@ export const WorkerCard = ({ worker, result, open, setOpen, threadId }) => {
     );
     const queryClient = cosmosClient.videoRenderingQueryClient.videoRendering;
     const response = await queryClient.GetWorker(worker);
+    console.log("reputation", response);
     setReputation(response.reputation);
   };
   useEffect(() => {

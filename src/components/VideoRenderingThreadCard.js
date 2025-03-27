@@ -25,7 +25,7 @@ export const VideoRenderingThreadCard = ({ thread }) => {
 
   const calculateAction = (worker) => {
     if (thread.solution && thread.solution.proposedBy == worker) {
-      return ["winner", thread.solution.hashes.length];
+      return ["winner", thread.solution.frames.length];
     }
 
     if (!thread.solution) return ["working", 0];
@@ -47,7 +47,7 @@ export const VideoRenderingThreadCard = ({ thread }) => {
     ) {
       for (const validation of thread.validations) {
         if (validation.validator == worker)
-          return ["Verified", validation.amountFiles.low];
+          return ["Verified", validation.frames?.length || 0];
       }
     }
   };
@@ -62,7 +62,7 @@ export const VideoRenderingThreadCard = ({ thread }) => {
       <Grid item xs={12}>
         <Box display={"flex"} alignItems={"center"}>
           <Typography variant="body">
-            From frame {thread.startFrame} to {thread.endFrame}
+            From frame {thread.startFrame.low} to {thread.endFrame.low}
           </Typography>
           {!thread.completed ? (
             <CircularProgress size={20} style={{ marginLeft: 10 }} />

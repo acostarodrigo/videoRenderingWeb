@@ -1,7 +1,7 @@
 {
   "projects": {
-    "default": "ante-test-3828f",
-    "dev": "ante-test-3828f"
+    "default": "layer1-dev",
+    "dev": "layer1-dev"
   },
   "targets": {},
   "etags": {},

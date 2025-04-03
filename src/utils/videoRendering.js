@@ -37,7 +37,7 @@ export const getVideoRenderingTasks = async () => {
 
 export const IPFSDownload = async (cids) => {
   const zip = new JSZip();
-  const ipfs = create({ url: "/ip4/127.0.0.1/tcp/5001" }); // Adjust if needed
+  const ipfs = create({ url: process.env.IPFS_NODE }); // Adjust if needed
 
   for (const dirCid of cids) {
     console.log("====================================");

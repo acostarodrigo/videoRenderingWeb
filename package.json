@@ -19,10 +19,12 @@
     "alchemy-sdk": "^3.4.3",
     "axios": "^1.7.9",
     "bignumber.js": "^9.1.2",
+    "crypto-browserify": "^3.12.1",
     "env-cmd": "^10.1.0",
     "ethers": "^6.13.2",
     "file-saver": "^2.0.5",
     "firebase": "^10.14.1",
+    "firebase-tools": "^14.0.1",
     "helia": "^4.2.5",
     "ipfs-http-client": "^60.0.1",
     "jszip": "^3.10.1",
@@ -44,9 +46,9 @@
     "start:local": "env-cmd -f .env.development npm start",
     "build:dev": "env-cmd -f .env.development npm run build && firebase deploy -P dev",
     "build:prod": "env-cmd -f .env.production npm run build && firebase deploy -P prod",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
   },
   "eslintConfig": {
     "extends": [
@@ -68,6 +70,6 @@
   },
   "devDependencies": {
     "@keplr-wallet/types": "0.10.17",
-    "react-app-rewired": "2.2.1"
+    "react-app-rewired": "^2.2.1"
   }
 }

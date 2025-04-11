@@ -1,6 +1,11 @@
 import store from "state/store";
 import { showSnackbar } from "state/ui";
-import { setTasks } from "state/videoRendering";
+import {
+  addWorker,
+  setAverageRenderTime,
+  setTasks,
+  setTotalFramesRendered,
+} from "state/videoRendering";
 import { create } from "ipfs-http-client";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
@@ -13,10 +18,30 @@ export const getVideoRenderingTasks = async () => {
     );
     const queryClient = cosmosClient.videoRenderingQueryClient.videoRendering;
     const result = [];
+    let totalAverage = 0;
+    let amount = 0;
+    let totalFramesRendered = 0;
     for (let i = 1; i < 100; i++) {
       const task = await queryClient.GetVideoRenderingTask(i);
       if (task) {
         console.log(task);
+        // we calculate the average time for all tasks
+        for (const thread of task.threads) {
+          if (thread.averageRenderSeconds?.low > 0) {
+            totalAverage = totalAverage + thread.averageRenderSeconds.low;
+            amount = amount + 1;
+          }
+
+          for (const worker of thread.workers) {
+            const response = await queryClient.GetWorker(worker);
+            store.dispatch(addWorker(response));
+          }
+        }
+
+        if (task.completed) {
+          totalFramesRendered =
+            totalFramesRendered + (task.endFrame - task.startFrame);
+        }
         result.push(task);
       } else {
         break;
@@ -24,6 +49,9 @@ export const getVideoRenderingTasks = async () => {
     }
 
     store.dispatch(setTasks(result));
+    store.dispatch(setTotalFramesRendered(totalFramesRendered));
+    if (amount > 0 && totalAverage > 0)
+      store.dispatch(setAverageRenderTime(totalAverage / amount));
   } catch (error) {
     console.log(error);
     store.dispatch(
@@ -67,6 +95,9 @@ export const getWorkerLogs = async (worker, threadId) => {
   );
   const queryClient = cosmosClient.videoRenderingQueryClient.videoRendering;
   const response = await queryClient.GetWorker(worker);
+  console.log("====================================");
+  console.log("Worker: ", response);
+  console.log("====================================");
   const { publicIp } = response;
   const url = `http://${publicIp}:26657`;
   const cosmos = await VideoRenderingStargateClient.connect(url);

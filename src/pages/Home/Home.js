@@ -1,34 +1,65 @@
-import React, { useEffect } from "react";
-import { Container, Typography } from "@mui/material";
+// HomePage.jsx
+import React from "react";
+import { Box, Container, Typography, useTheme } from "@mui/material";
+
+import heroBanner from "images/hero-banner.jpg";
 import { TopBar } from "components/TopBar";
-import { Footer } from "components/Footer";
-import { useSelector } from "react-redux";
-import VideoRenderingTaskCard from "components/VideoRenderingTaskCard";
-import { getVideoRenderingTasks } from "utils/videoRendering";
+import { NetworkStats } from "views/NetworkStats";
+import { TopPerformers } from "views/TopPerformers";
+import { RenderTimeEstimator } from "views/RenderTimeEstimator";
 
 export const Home = () => {
-  const { tasks } = useSelector((state) => state.videoRendering);
-
-  useEffect(() => {
-    getVideoRenderingTasks();
-  }, []);
+  const theme = useTheme();
 
   return (
-    <>
-      <Container>
-        <TopBar />
-        {tasks?.length > 0 ? (
-          <>
-            {tasks.map((task, index) => (
-              <VideoRenderingTaskCard task={task} key={index} />
-            ))}
-          </>
-        ) : (
-          <Typography variant="h5"> No tasks available</Typography>
-        )}
+    <Box>
+      <TopBar />
+      {/* Hero Section with Background Image */}
+      <Box
+        sx={{
+          py: 12,
+          px: 2,
+          textAlign: "center",
+          color: "#fff",
+          backgroundImage: `url(${heroBanner})`,
+          backgroundSize: "cover",
+          backgroundPosition: "top",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        <Typography variant="h2" fontWeight="bold" gutterBottom>
+          Decentralized Video Rendering
+        </Typography>
+        <Typography variant="h5">
+          Render frames. Earn crypto. Compete fairly.
+        </Typography>
+      </Box>
 
-        <Footer />
+      {/* Description Section */}
+      <Box
+        sx={{ px: 4, py: 8, maxWidth: 900, mx: "auto", textAlign: "center" }}
+      >
+        <Typography variant="h4" gutterBottom>
+          What We’re Building
+        </Typography>
+        <Typography variant="body1" paragraph>
+          A decentralized rendering network that rewards speed and honesty.
+        </Typography>
+        <Typography variant="body1" paragraph>
+          Anyone with a GPU can compete to render frames of animation and earn
+          crypto. The fastest and most honest nodes win rewards.
+        </Typography>
+        <Typography variant="body1">
+          Transparency, speed, and decentralization—at the core of every pixel.
+        </Typography>
+      </Box>
+
+      <NetworkStats />
+
+      <Container>
+        <TopPerformers />
       </Container>
-    </>
+      <RenderTimeEstimator />
+    </Box>
   );
 };

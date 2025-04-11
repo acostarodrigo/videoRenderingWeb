@@ -7,8 +7,14 @@ import { PageNotFound } from "pages/PageNotFound";
 import { Home } from "pages/Home/Home";
 import { CustomSnackbar } from "components/CustomSnackbar";
 import { CustomBackdrop } from "components/CustomBackdrop";
+import { useEffect } from "react";
+import { getVideoRenderingTasks } from "utils/videoRendering";
 
 function App() {
+  useEffect(() => {
+    getVideoRenderingTasks();
+  }, []);
+
   return (
     <BrowserRouter>
       <ThemeProvider theme={getTheme("light")}>

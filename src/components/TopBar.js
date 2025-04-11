@@ -1,39 +1,42 @@
 import React from "react";
+import {
+  AppBar,
+  Toolbar,
+  Box,
+  Typography,
+  Button,
+  Container,
+} from "@mui/material";
+
 import logo from "images/logo.png";
-import { Button, Grid, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
-import { ConnectWalletButton } from "./ConnectWalletButton";
-import { useSelector } from "react-redux";
-import { CreateTaskButton } from "./CreateTaskButton";
 
 export const TopBar = () => {
-  const { address } = useSelector((state) => state.blockchain);
   return (
-    <Grid
-      container
-      direction={"row"}
-      justifyContent={"space-between"}
-      alignItems={"center"}
-      spacing={2}
-      marginY={5}
-    >
-      <Grid item>
-        <Button
-          component={Link}
-          href="/"
-          variant="text"
-          disableElevation
-          disableRipple
-        >
-          <img src={logo} width={50} alt="Ante Test" />
-        </Button>
-      </Grid>
-      <Grid item>
-        <Typography variant="h4">Janction Video Rendering</Typography>
-      </Grid>
-      <Grid item>
-        {address ? <CreateTaskButton /> : <ConnectWalletButton />}
-      </Grid>
-    </Grid>
+    <AppBar position="static" color="default" elevation={1}>
+      <Container maxWidth="xl">
+        <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
+          {/* Logo */}
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box
+              component="img"
+              src={logo}
+              alt="Logo"
+              sx={{ height: 40, width: "auto", mr: 2 }}
+            />
+            <Typography variant="h6" noWrap sx={{ fontWeight: "bold" }}>
+              Janction
+            </Typography>
+          </Box>
+
+          {/* Navigation Buttons */}
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <Button color="primary">How it works</Button>
+            <Button color="primary">Join your PC</Button>
+            <Button color="primary">Render your animation</Button>
+            <Button color="primary">Rendering Explorer</Button>
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
 };

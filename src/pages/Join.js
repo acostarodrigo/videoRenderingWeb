@@ -22,6 +22,25 @@ export const Join = () => {
 
         {/* Instructions Section */}
         <Box mb={8}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "#e3f2fd",
+              p: 2,
+              borderRadius: 2,
+              mb: 2,
+            }}
+          >
+            <Typography variant="body1" sx={{ mr: 1 }}>
+              ℹ️
+            </Typography>
+            <Typography variant="body1" color="text.primary">
+              Janction's blockchain is still in development. You can join the
+              testnet to help us make it better.
+            </Typography>
+          </Box>
           <Typography variant="h4" fontWeight="medium" gutterBottom>
             How to Join
           </Typography>

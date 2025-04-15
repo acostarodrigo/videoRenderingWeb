@@ -25,6 +25,10 @@ export const getVideoRenderingTasks = async () => {
       const task = await queryClient.GetVideoRenderingTask(i);
       if (task) {
         console.log(task);
+
+        totalFramesRendered =
+          totalFramesRendered + (task.endFrame - task.startFrame);
+
         // we calculate the average time for all tasks
         for (const thread of task.threads) {
           if (thread.averageRenderSeconds?.low > 0) {
@@ -38,13 +42,9 @@ export const getVideoRenderingTasks = async () => {
           }
         }
 
-        if (task.completed) {
-          totalFramesRendered =
-            totalFramesRendered + (task.endFrame - task.startFrame);
-        }
         result.push(task);
       } else {
-        break;
+        continue;
       }
     }
 

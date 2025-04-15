@@ -7,6 +7,8 @@ import { TopBar } from "components/TopBar";
 import { NetworkStats } from "views/NetworkStats";
 import { TopPerformers } from "views/TopPerformers";
 import { RenderTimeEstimator } from "views/RenderTimeEstimator";
+import { Footer } from "views/Footer";
+import { SubscribeForm } from "views/SubscribeForm";
 
 export const Home = () => {
   const theme = useTheme();
@@ -56,10 +58,16 @@ export const Home = () => {
 
       <NetworkStats />
 
-      <Container>
+      <Box marginY={5} padding={10} bgcolor={theme.palette.primary.light}>
         <TopPerformers />
-      </Container>
-      <RenderTimeEstimator />
+      </Box>
+
+      <Box marginY={5} padding={10} bgcolor={theme.palette.secondary.main}>
+        <RenderTimeEstimator />
+      </Box>
+
+      <SubscribeForm />
+      <Footer />
     </Box>
   );
 };

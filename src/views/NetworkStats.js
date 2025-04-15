@@ -37,7 +37,7 @@ export const NetworkStats = () => {
             Network Stats - Updated realtime
           </Typography>
 
-          <Grid container spacing={4} sx={{ mb: 6 }}>
+          <Grid container spacing={4} sx={{ mb: 6 }} textAlign={"center"}>
             <Grid item xs={12} sm={6} md={3}>
               <Card>
                 <CardContent>
@@ -66,10 +66,11 @@ export const NetworkStats = () => {
               <Card>
                 <CardContent>
                   <Typography variant="subtitle1" color={"primary"}>
-                    Avg Frame Render Time (sec)
+                    Avg Frame Render Time
                   </Typography>
                   <Typography variant="h5" fontWeight="bold" color={"primary"}>
-                    <CountUp end={averageRenderTime || 0} duration={5} />
+                    <CountUp end={averageRenderTime || 0} duration={5} />{" "}
+                    seconds
                   </Typography>
                 </CardContent>
               </Card>

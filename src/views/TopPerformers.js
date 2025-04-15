@@ -12,6 +12,8 @@ import {
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import { shortenAddress } from "utils/misc";
+import { isMobile } from "react-device-detect";
+import { NumericFormat } from "react-number-format";
 
 const mockStats = {
   totalNodes: 128,
@@ -28,6 +30,13 @@ const mockStats = {
 export const TopPerformers = () => {
   const theme = useTheme();
   const { workers } = useSelector((state) => state.videoRendering);
+
+  const sortByWinnings = (workerA, workerB) => {
+    const a = Number(workerA.reputation?.winnings?.amount || 0);
+    const b = Number(workerB.reputation?.winnings?.amount || 0);
+
+    return b - a; // ascending
+  };
   return (
     <>
       {/* Top Performers Table */}
@@ -45,19 +54,26 @@ export const TopPerformers = () => {
                 <strong>Earnings</strong>
               </TableCell>
               <TableCell>
-                <strong>Avg Time / Frame in seconds</strong>
+                <strong>Avg Time / Frame </strong>
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {workers.map((worker, index) => (
+            {workers.toSorted(sortByWinnings).map((worker, index) => (
               <TableRow key={index}>
-                <TableCell>{shortenAddress(worker.address)}</TableCell>
                 <TableCell>
-                  $ {worker.reputation?.winnings?.amount || 0} JCT
+                  {isMobile ? shortenAddress(worker.address) : worker.address}
                 </TableCell>
                 <TableCell>
-                  {worker.reputation.renderDurations[0].low}
+                  $ {worker.reputation?.winnings?.amount / 1_000_000 || 0} JCT
+                </TableCell>
+                <TableCell>
+                  {worker.reputation?.renderDurations.length > 0
+                    ? worker.reputation?.renderDurations[
+                        worker.reputation?.renderDurations.length - 1
+                      ].low
+                    : 0}{" "}
+                  seconds
                 </TableCell>
               </TableRow>
             ))}

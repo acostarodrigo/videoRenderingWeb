@@ -9,6 +9,10 @@ import { CustomSnackbar } from "components/CustomSnackbar";
 import { CustomBackdrop } from "components/CustomBackdrop";
 import { useEffect } from "react";
 import { getVideoRenderingTasks } from "utils/videoRendering";
+import { RenderingExplorer } from "pages/RenderingExplorer";
+import { RenderTask } from "pages/RenderTask";
+import { HowItWorks } from "pages/HowItWorks";
+import { Join } from "pages/Join";
 
 function App() {
   useEffect(() => {
@@ -20,6 +24,10 @@ function App() {
       <ThemeProvider theme={getTheme("light")}>
         <Routes>
           <Route exact path="/" element={<Home />} />
+          <Route exact path="/explorer" element={<RenderingExplorer />} />
+          <Route exact path="/render" element={<RenderTask />} />
+          <Route exact path="/join" element={<Join />} />
+          <Route exact path="/how" element={<HowItWorks />} />
           <Route path={"*"} exact element={<PageNotFound />} />
         </Routes>
         <CustomSnackbar />

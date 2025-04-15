@@ -15,7 +15,7 @@ import { shortenAddress } from "utils/misc";
 import { VideoRenderingThreadCard } from "./VideoRenderingThreadCard";
 import { SolutionCard } from "./SolutionCard";
 
-export default function VideoRenderingTaskCard({ task }) {
+export default function VideoRenderingTaskCard({ task, explorer = true }) {
   const [expanded, setExpanded] = useState(!task.completed);
   const { address } = useSelector((state) => state.blockchain);
   return (
@@ -54,7 +54,7 @@ export default function VideoRenderingTaskCard({ task }) {
             <VideoRenderingThreadCard thread={thread} key={index} />
           ))}
 
-          {task.completed && <SolutionCard task={task} />}
+          {task.completed & !explorer ? <SolutionCard task={task} /> : <></>}
         </>
       </AccordionDetails>
     </Accordion>

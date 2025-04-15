@@ -49,8 +49,8 @@ export const RenderTimeEstimator = () => {
   };
 
   const calculateRenderTime = (frames, stats) => {
-    let threads = Math.floor(stats.availableWorkers / stats.workersPerThread);
-    if (threads == 0) threads = 1;
+    let threads = Math.floor(100 / stats.workersPerThread);
+    if (threads === 0) threads = 1;
     if (threads === 0 || stats.secondsPerFrame <= 0) return null;
 
     const framesPerThread = frames / threads;
@@ -74,14 +74,16 @@ export const RenderTimeEstimator = () => {
           Available workers: <strong>{stats.availableWorkers}</strong> → grouped
           into{" "}
           <strong>
-            {Math.floor(stats.availableWorkers / stats.workersPerThread) == 0
+            {Math.floor(stats.availableWorkers / stats.workersPerThread) === 0
               ? 1
               : Math.floor(stats.availableWorkers / stats.workersPerThread)}
           </strong>{" "}
           threads (max 10 workers per thread)
           <br />
           Render speed:{" "}
-          <strong>{stats.secondsPerFrame} frames/second per thread</strong>
+          <strong>
+            {stats.secondsPerFrame.toFixed(2)} frames/second per thread
+          </strong>
         </Typography>
 
         <Grid container spacing={2} alignItems="center" sx={{ mb: 3 }}>
@@ -133,7 +135,8 @@ export const RenderTimeEstimator = () => {
                 <br />• Each thread will render approximately{" "}
                 <strong>{(frames / result.threads).toFixed(0)}</strong> frames.
                 <br />• Each frame takes{" "}
-                <strong>{stats.secondsPerFrame}</strong> seconds to render.
+                <strong>{stats.secondsPerFrame.toFixed(2)}</strong> seconds to
+                render.
                 <br />• The total render time is based on how long one thread
                 takes to finish its frames.
               </Typography>

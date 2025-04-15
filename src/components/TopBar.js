@@ -6,9 +6,11 @@ import {
   Typography,
   Button,
   Container,
+  Grid,
 } from "@mui/material";
 
 import logo from "images/logo.png";
+import { Link } from "react-router-dom";
 
 export const TopBar = () => {
   return (
@@ -16,7 +18,12 @@ export const TopBar = () => {
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
           {/* Logo */}
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box
+            sx={{ display: "flex", alignItems: "center" }}
+            component={Link}
+            to={"/"}
+            style={{ textDecoration: "none" }}
+          >
             <Box
               component="img"
               src={logo}
@@ -29,12 +36,38 @@ export const TopBar = () => {
           </Box>
 
           {/* Navigation Buttons */}
-          <Box sx={{ display: "flex", gap: 2 }}>
-            <Button color="primary">How it works</Button>
-            <Button color="primary">Join your PC</Button>
-            <Button color="primary">Render your animation</Button>
-            <Button color="primary">Rendering Explorer</Button>
-          </Box>
+          <Grid
+            container
+            justifyContent={"flex-end"}
+            alignItems={"center"}
+            spacing={{ xs: 0, md: 2 }}
+          >
+            <Grid item xs={12} md={2}>
+              <Button color="primary" component={Link} to={"/"}>
+                Home
+              </Button>
+            </Grid>
+            <Grid item xs={12} md={2}>
+              <Button color="primary" component={Link} to={"/how"}>
+                How it works
+              </Button>
+            </Grid>
+            <Grid item xs={12} md={2}>
+              <Button color="primary" component={Link} to={"/join"}>
+                Join your PC
+              </Button>
+            </Grid>
+            <Grid item xs={12} md={2}>
+              <Button color="primary" component={Link} to={"/render"}>
+                Render your animation
+              </Button>
+            </Grid>
+            <Grid item xs={12} md={2}>
+              <Button color="primary" component={Link} to={"/explorer"}>
+                Rendering Explorer
+              </Button>
+            </Grid>
+          </Grid>
         </Toolbar>
       </Container>
     </AppBar>

@@ -47,28 +47,30 @@ export const Join = () => {
 
           {[
             {
-              title: "1. Clone the Repository",
-              description:
-                "Clone our GitHub repository containing the node setup and rendering tools:",
-              command: "git clone https://github.com/janction-network/node",
+              title: "1. Prerequisites",
+              description: "You will need Go Lang, IPFS and Docker installed:",
+              command: `
+https://go.dev/doc/install
+https://docs.ipfs.tech/install/
+https://docs.docker.com/get-docker/
+              `,
             },
             {
-              title: "2. Install IPFS",
-              description:
-                "IPFS is required to share and fetch frame files across the network.",
-              command: "https://docs.ipfs.tech/install/",
+              title: "2. Build from source",
+              description: "Clone Janction's layer 1 node",
+              command: `
+git clone https://github.com/acostarodrigo/janctionVideoRenderingModule.git videoRendering
+git clone https://github.com/acostarodrigo/janctionLayer1Node.git"`,
             },
             {
-              title: "3. Install Docker",
-              description:
-                "Docker is used to run the rendering environment in an isolated container.",
-              command: "https://docs.docker.com/get-docker/",
-            },
-            {
-              title: "4. Start the Node",
-              description:
-                "Follow the README instructions to launch your Janction node and register as a worker.",
-              command: "cd node\nnpm install\nnpm run start",
+              title: "3. Compile and run",
+              description: "Compile the node and joint the testnet",
+              command: `
+cd janctionLayer1Node
+make install
+make init
+make testnet-add
+              `,
             },
           ].map((step, index) => (
             <Card key={index} sx={{ mb: 4 }}>
@@ -93,6 +95,28 @@ export const Join = () => {
               </CardContent>
             </Card>
           ))}
+        </Box>
+      </Box>
+      <Box textAlign="center" py={4}>
+        <Box
+          sx={{
+            backgroundColor: "#fff3cd",
+            color: "#856404",
+            p: 2,
+            borderRadius: 2,
+            mb: 3,
+            display: "inline-block",
+          }}
+        >
+          <Typography variant="body1" fontWeight="medium">
+            Having troubles? Contact{" "}
+            <a
+              href="mailto:rodrigo@jasmylab.com"
+              style={{ color: "#856404", textDecoration: "underline" }}
+            >
+              rodrigo@jasmylab.com
+            </a>
+          </Typography>
         </Box>
       </Box>
       <Footer />

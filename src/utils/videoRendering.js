@@ -95,9 +95,6 @@ export const getWorkerLogs = async (worker, threadId) => {
   );
   const queryClient = cosmosClient.videoRenderingQueryClient.videoRendering;
   const response = await queryClient.GetWorker(worker);
-  console.log("====================================");
-  console.log("Worker: ", response);
-  console.log("====================================");
   const { publicIp } = response;
   const url = `http://${publicIp}:26657`;
   const cosmos = await VideoRenderingStargateClient.connect(url);

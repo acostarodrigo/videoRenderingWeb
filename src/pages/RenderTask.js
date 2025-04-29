@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { hideBackdrop, showBackdrop, showSnackbar } from "state/ui";
 import { ConnectWalletButton } from "components/ConnectWalletButton";
 import { getSigningClient } from "utils/web3";
+import { CreateTaskButton } from "components/CreateTaskButton";
 
 const pinata = new PinataSDK({
   pinataJwt:
@@ -82,7 +83,7 @@ export const RenderTask = () => {
         startFrame,
         endFrame,
         workers,
-        parsedReward,
+        "1000000",
         "auto"
       );
     } catch (error) {
@@ -117,6 +118,7 @@ export const RenderTask = () => {
 
           <Box padding={5} marginBottom={5}>
             <ConnectWalletButton />
+            <CreateTaskButton />
           </Box>
           {/* Form */}
           {address && (

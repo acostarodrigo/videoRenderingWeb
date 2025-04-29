@@ -21,9 +21,6 @@ export const NetworkStats = () => {
     useSelector((state) => state.videoRendering);
 
   const theme = useTheme();
-  console.log("====================================");
-  console.log("there", theme);
-  console.log("====================================");
   return (
     <>
       <Box sx={{ px: 4, py: 8, backgroundColor: theme.palette.grey[300] }}>

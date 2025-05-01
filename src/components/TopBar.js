@@ -42,7 +42,7 @@ export const TopBar = () => {
             alignItems={"center"}
             spacing={{ xs: 0, md: 2 }}
           >
-            <Grid item xs={12} md={2}>
+            <Grid item xs={12} md={1}>
               <Button color="primary" component={Link} to={"/"}>
                 Home
               </Button>
@@ -55,6 +55,11 @@ export const TopBar = () => {
             <Grid item xs={12} md={2}>
               <Button color="primary" component={Link} to={"/join"}>
                 Join your PC
+              </Button>
+            </Grid>
+            <Grid item xs={12} md={1}>
+              <Button color="primary" component={Link} to={"/faucet"}>
+                Faucet
               </Button>
             </Grid>
             <Grid item xs={12} md={2}>

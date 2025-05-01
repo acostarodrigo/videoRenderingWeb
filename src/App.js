@@ -13,6 +13,7 @@ import { RenderingExplorer } from "pages/RenderingExplorer";
 import { RenderTask } from "pages/RenderTask";
 import { HowItWorks } from "pages/HowItWorks";
 import { Join } from "pages/Join";
+import Faucet from "pages/Faucet";
 
 function App() {
   useEffect(() => {
@@ -28,6 +29,7 @@ function App() {
           <Route exact path="/render" element={<RenderTask />} />
           <Route exact path="/join" element={<Join />} />
           <Route exact path="/how" element={<HowItWorks />} />
+          <Route exact path="/faucet" element={<Faucet />} />
           <Route path={"*"} exact element={<PageNotFound />} />
         </Routes>
         <CustomSnackbar />

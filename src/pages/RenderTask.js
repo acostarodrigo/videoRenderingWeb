@@ -118,7 +118,6 @@ export const RenderTask = () => {
 
           <Box padding={5} marginBottom={5}>
             <ConnectWalletButton />
-            <CreateTaskButton />
           </Box>
           {/* Form */}
           {address && (

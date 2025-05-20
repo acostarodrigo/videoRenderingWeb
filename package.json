@@ -55,7 +55,7 @@
     "start:local": "env-cmd -f .env.development npm start",
     "build:dev": "env-cmd -f .env.development npm run build",
     "build:prod": "env-cmd -f .env.production npm run build",
-    "build": "GENERATE_SOURCEMAP=false react-app-rewired build",
+    "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject"
   },

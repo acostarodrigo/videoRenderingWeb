@@ -72,8 +72,11 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.27.1",
+    "@babel/preset-env": "^7.27.2",
     "@craco/craco": "^7.1.0",
     "@keplr-wallet/types": "0.10.17",
+    "babel-loader": "^10.0.0",
     "react-app-rewired": "^2.2.1"
   }
 }

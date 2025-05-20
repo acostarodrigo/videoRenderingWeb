@@ -1,41 +1,41 @@
-require("dotenv").config();
+const path = require("path");
 const webpack = require("webpack");
 const ModuleScopePlugin = require("react-dev-utils/ModuleScopePlugin");
-const path = require("path");
 
 module.exports = function override(config, env) {
-  // ────────────────────────────────────────────────────────────────
-  // 1) Remove ModuleScopePlugin so imports outside src/ are allowed
-  // ────────────────────────────────────────────────────────────────
+  // ───────────────────────────────────────────────────────────────────────────
+  // 1) Ensure there's exactly one React in the bundle
+  // ───────────────────────────────────────────────────────────────────────────
+  // Remove the scope plugin only if you still need imports outside src/
   config.resolve.plugins = config.resolve.plugins.filter(
-    (plugin) => plugin.constructor.name !== "ModuleScopePlugin"
+    (p) => p.constructor.name !== "ModuleScopePlugin"
   );
 
-  // ────────────────────────────────────────────────────────────────
-  // 2) Tell webpack to also look in your nested cosmosClient/node_modules
-  // ────────────────────────────────────────────────────────────────
-  config.resolve.modules = [
-    path.resolve(__dirname, "src"),
-    path.resolve(__dirname, "src/cosmosClient/node_modules"),
-    "node_modules",
-  ];
+  // Force all React imports to come from our root node_modules
+  config.resolve.alias = {
+    ...(config.resolve.alias || {}),
+    react: path.resolve(__dirname, "node_modules/react"),
+    "react-dom": path.resolve(__dirname, "node_modules/react-dom"),
+    "process/browser": require.resolve("process/browser.js"),
+  };
 
-  // ────────────────────────────────────────────────────────────────
-  // 3) Transpile rogue CJS (e.g. decode.ts) into proper ESM
-  // ────────────────────────────────────────────────────────────────
-  config.module.rules.push({
-    test: /decode\.ts$/,
-    use: {
-      loader: "babel-loader",
-      options: {
-        presets: [["@babel/preset-env", { targets: "defaults" }]],
-      },
-    },
-  });
+  // ───────────────────────────────────────────────────────────────────────────
+  // 2) Transpile only the problematic CosmJS crypto code
+  // ───────────────────────────────────────────────────────────────────────────
+  const oneOf = config.module.rules.find((r) => Array.isArray(r.oneOf)).oneOf;
+  for (const rule of oneOf) {
+    if (rule.loader && rule.loader.includes("babel-loader")) {
+      rule.include = [
+        path.resolve(__dirname, "src"),
+        // Only transpile CosmJS crypto pbkdf2.js and related
+        path.resolve(__dirname, "node_modules/@cosmjs/crypto/build/pbkdf2.js"),
+      ];
+    }
+  }
 
-  // ────────────────────────────────────────────────────────────────
-  // 4) Polyfill Node globals & expose your env vars
-  // ────────────────────────────────────────────────────────────────
+  // ───────────────────────────────────────────────────────────────────────────
+  // 3) Polyfill Node globals & expose env vars
+  // ───────────────────────────────────────────────────────────────────────────
   config.plugins.push(
     new webpack.ProvidePlugin({
       process: "process/browser",
@@ -44,9 +44,6 @@ module.exports = function override(config, env) {
     new webpack.EnvironmentPlugin(["RPC_URL", "REST_URL"])
   );
 
-  // ────────────────────────────────────────────────────────────────
-  // 5) Browser‐friendly fallbacks for Node core modules
-  // ────────────────────────────────────────────────────────────────
   config.resolve.fallback = {
     buffer: require.resolve("buffer/"),
     crypto: require.resolve("crypto-browserify"),
@@ -54,14 +51,6 @@ module.exports = function override(config, env) {
     path: require.resolve("path-browserify"),
     stream: require.resolve("stream-browserify"),
     string_decoder: require.resolve("string_decoder/"),
-  };
-
-  // ────────────────────────────────────────────────────────────────
-  // 6) Alias process/browser → process/browser.js for strict ESM
-  // ────────────────────────────────────────────────────────────────
-  config.resolve.alias = {
-    ...(config.resolve.alias || {}),
-    "process/browser": require.resolve("process/browser.js"),
   };
 
   return config;

@@ -53,7 +53,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "start:local": "env-cmd -f .env.development npm start",
-    "build:dev": "env-cmd -f .env.development npm run build",
+    "build:dev": "env-cmd -f .env.development npm run build && firebase deploy -P dev",
     "build:prod": "env-cmd -f .env.production npm run build",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",

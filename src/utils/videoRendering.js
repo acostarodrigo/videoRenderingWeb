@@ -22,10 +22,9 @@ export const getVideoRenderingTasks = async () => {
     let amount = 0;
     let totalFramesRendered = 0;
     for (let i = 1; i < 100; i++) {
-      const task = await queryClient.GetVideoRenderingTask(i);
-      if (task) {
-        console.log(task);
-
+      const task = await queryClient.GetVideoRenderingTask(i.toString());
+      if (task?.taskId) {
+        console.log("got task", task);
         totalFramesRendered =
           totalFramesRendered + (task.endFrame - task.startFrame);
 

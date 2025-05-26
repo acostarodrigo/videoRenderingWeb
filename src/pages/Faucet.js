@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { Footer } from "views/Footer";
 import { TopBar } from "components/TopBar";
 
-const FAUCET_URL = process.env.REACT_APP_FAUCET_URL;
+const FAUCET_URL = process.env.FAUCET_URL;
 
 export default function Faucet() {
   const { address } = useSelector((state) => state.blockchain);
@@ -30,6 +30,7 @@ export default function Faucet() {
       const res = await fetch(
         `${FAUCET_URL}/faucet?address=${encodeURIComponent(address)}`
       );
+      console.log("faucet response", res);
       if (!res.ok) {
         const text = await res.text();
         throw new Error(`Faucet error: ${res.status} ${text}`);

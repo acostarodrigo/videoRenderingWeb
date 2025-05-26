@@ -66,9 +66,7 @@ export const CreateTaskButton = () => {
         data.reward.toString().replace(".", ""),
         "auto"
       );
-      console.log("====================================");
-      console.log("response", response);
-      console.log("====================================");
+      
       dispatch(
         showSnackbar({
           severity: "success",

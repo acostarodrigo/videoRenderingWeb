@@ -9,9 +9,6 @@ import BigNumber from "bignumber.js";
 import { VideoRenderingStargateClient } from "cosmosClient/dist/stargateClient";
 
 export const WorkerCard = ({ worker, result, open, setOpen, threadId }) => {
-  console.log("====================================");
-  console.log(result);
-  console.log("====================================");
   const [reputation, setReputation] = useState({});
   const getReputation = async () => {
     const cosmosClient = await VideoRenderingStargateClient.connect(
@@ -19,7 +16,6 @@ export const WorkerCard = ({ worker, result, open, setOpen, threadId }) => {
     );
     const queryClient = cosmosClient.videoRenderingQueryClient.videoRendering;
     const response = await queryClient.GetWorker(worker);
-    console.log("reputation", response);
     setReputation(response.reputation);
   };
   useEffect(() => {

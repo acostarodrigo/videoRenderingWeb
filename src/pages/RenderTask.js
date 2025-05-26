@@ -51,7 +51,6 @@ export const RenderTask = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const parsedReward = ethers.parseUnits(reward.toString(), 6);
-    console.log(reward, parsedReward);
 
     if (!file) return;
     // Replace with actual blockchain TX or API logic

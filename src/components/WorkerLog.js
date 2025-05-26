@@ -43,14 +43,9 @@ export const WorkerLog = ({ worker, threadId, open, setOpen }) => {
     try {
       setIsConnecting(true);
       const result = await getWorkerLogs(worker, threadId);
-      console.log("====================================");
-      console.log(result);
-      console.log("====================================");
       setLogs(result.logs);
     } catch (error) {
-      console.log("====================================");
       console.log(error);
-      console.log("====================================");
       dispatch(
         showSnackbar({
           severity: "error",

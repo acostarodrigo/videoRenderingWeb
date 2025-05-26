@@ -18,7 +18,6 @@ export const logError = async (errorAction, error, uid) => {
       timestamp: moment().unix(),
       date: moment().toDate(),
     };
-    console.log(data);
 
     await db
       .collection("errors")

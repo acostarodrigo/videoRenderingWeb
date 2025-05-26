@@ -24,7 +24,6 @@ export const getVideoRenderingTasks = async () => {
     for (let i = 1; i < 100; i++) {
       const task = await queryClient.GetVideoRenderingTask(i.toString());
       if (task?.taskId) {
-        console.log("got task", task);
         totalFramesRendered =
           totalFramesRendered + (task.endFrame - task.startFrame);
 
@@ -67,9 +66,6 @@ export const IPFSDownload = async (cids) => {
   const ipfs = create({ url: process.env.IPFS_NODE }); // Adjust if needed
 
   for (const dirCid of cids) {
-    console.log("====================================");
-    console.log("downloading ", dirCid);
-    console.log("====================================");
     for await (const file of ipfs.ls(dirCid)) {
       if (file.type !== "file") continue; // Skip directories, only process files
 

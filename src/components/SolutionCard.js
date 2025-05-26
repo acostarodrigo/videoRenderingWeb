@@ -14,7 +14,6 @@ export const SolutionCard = ({ task }) => {
   const getCids = () => {
     const result = [];
     for (const thread of task.threads) {
-      console.log(thread);
       result.push(thread.solution?.dir);
       setAmount(
         (current) => current + (thread.endFrame.low - thread.startFrame.low) + 1

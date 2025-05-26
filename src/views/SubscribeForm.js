@@ -21,7 +21,6 @@ export const SubscribeForm = () => {
     }
 
     // Replace this with your actual subscribe logic (API, mailchimp, etc.)
-    console.log("Subscribing:", email);
     setSubmitted(true);
   };
 

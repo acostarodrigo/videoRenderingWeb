@@ -43,7 +43,7 @@ export default function VideoRenderingTaskCard({ task, explorer = true }) {
             </Typography>
           </Grid>
           <Grid item>
-            $JCT {BigNumber(task.reward.amount).dividedBy(1e6).toFormat(3)}
+            $JCT {BigNumber(task.reward?.amount).dividedBy(1e6).toFormat(3)}
           </Grid>
         </Grid>
       </AccordionSummary>

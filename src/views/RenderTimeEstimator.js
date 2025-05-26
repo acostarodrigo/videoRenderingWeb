@@ -55,7 +55,6 @@ export const RenderTimeEstimator = () => {
 
     const framesPerThread = frames / threads;
     const totalTime = framesPerThread * stats.secondsPerFrame;
-    console.log("totalTime", totalTime);
     return {
       threads,
       timeInSeconds: totalTime,

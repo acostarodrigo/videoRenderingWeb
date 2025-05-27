@@ -6,13 +6,13 @@ export const getSigningClient = async (keplr) => {
   await keplr.enable(videoRenderingChainId);
   const offlineSigner = keplr.getOfflineSigner(videoRenderingChainId);
   const accounts = await offlineSigner.getAccounts();
-  const creator = (await offlineSigner.getAccounts())[0].address;
+  const creator = accounts[0].address.trim();
   const signingClient =
     await VideoRenderingSigningStargateClient.connectWithSigner(
       process.env.RPC_URL,
       offlineSigner,
       {
-        gasPrice: GasPrice.fromString("1jct"),
+        gasPrice: GasPrice.fromString("0jct"),
       }
     );
   return [creator, signingClient];

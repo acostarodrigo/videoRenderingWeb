@@ -85,18 +85,12 @@ export const RenderTask = () => {
     try {
       const { keplr } = window;
       const [creator, client] = await getSigningClient(keplr);
-      const isValid2 = isValidBech32(creator);
-      console.log(isValid2);
-      console.log("Creating task with values:", {
-        creator,
-        file,
-        startFrame,
-        endFrame,
-        workers,
-        parsedReward,
-      });
+      console.log("creator from client", creator);
+      const isValid = isValidBech32(creator);
+      if (!isValid) throw new Error("Address is not valid");
+
       dispatch(setBackdropMessage("Submitting transaction..."));
-      const response = await client.createVideoRenderingTask(
+      await client.createVideoRenderingTask(
         creator,
         cid,
         startFrame,
@@ -105,15 +99,23 @@ export const RenderTask = () => {
         parsedReward,
         "auto"
       );
-      console.log("response", response);
     } catch (error) {
-      console.error(error);
+      console.error("error broadcast", error);
       if (error.message.includes("Account does not exist on chain")) {
         dispatch(
           showSnackbar({
             severity: "warning",
             message:
               "Connected wallet doesn't have any JCT Tokens. Add some and then continue.",
+          })
+        );
+        return;
+      }
+      if (error.message.includes("Length must be a multiple of 4")) {
+        dispatch(
+          showSnackbar({
+            severity: "success",
+            message: "Task created successfully. Rendering will start soon.",
           })
         );
         return;

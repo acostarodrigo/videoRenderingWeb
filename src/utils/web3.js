@@ -38,7 +38,7 @@ export const getChainInfo = () => {
     },
     currencies: [
       {
-        coinDenom: "JCT",
+        coinDenom: "jct",
         coinMinimalDenom: "jct",
         coinDecimals: 6,
       },

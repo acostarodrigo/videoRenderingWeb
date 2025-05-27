@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PinataSDK } from "pinata";
+import { create } from "ipfs-http-client";
 import { ethers } from "ethers";
 import {
   Box,
@@ -15,16 +15,16 @@ import { TopBar } from "components/TopBar";
 import { Footer } from "views/Footer";
 import { NumericFormat } from "react-number-format";
 import { useDispatch, useSelector } from "react-redux";
-import { hideBackdrop, showBackdrop, showSnackbar } from "state/ui";
+import {
+  hideBackdrop,
+  setBackdropMessage,
+  showBackdrop,
+  showSnackbar,
+} from "state/ui";
 import { ConnectWalletButton } from "components/ConnectWalletButton";
 import { getSigningClient } from "utils/web3";
 import { CreateTaskButton } from "components/CreateTaskButton";
-
-const pinata = new PinataSDK({
-  pinataJwt:
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJhYThhMWExYS05NmE4LTQwNzUtOTA0MS00NDk2ZmNjOWJhMjMiLCJlbWFpbCI6ImFjb3N0YS5yb2RyaWdvNzdAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjEsImlkIjoiTllDMSJ9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjA3YjIzYmNjZjkxNWE1MTQ4ZWU1Iiwic2NvcGVkS2V5U2VjcmV0IjoiYWNlZGY5ZjUzN2MwNWNlODNlYjljMjQxOWFiMjcyZDBkY2Q3OGZhNmI4N2U2ZjgwZjNkZDNlOWQ5ZjA2NTA5ZiIsImV4cCI6MTc3NzA1MDE3Mn0.ZRkKVBe1lQvkVFj8TIGBY0Ljvmbw0jfzFa0OO1nmkA0",
-  pinataGateway: "moccasin-shrill-guppy-218.mypinata.cloud",
-});
+import { isValidBech32 } from "utils/address";
 
 export const RenderTask = () => {
   const dispatch = useDispatch();
@@ -35,16 +35,30 @@ export const RenderTask = () => {
   const [workers, setWorkers] = useState(10);
   const [reward, setReward] = useState("");
 
+  function bytesToMB(b) {
+    return (b / 1024 / 1024).toFixed(1);
+  }
+
   async function uploadFile() {
     try {
-      dispatch(showBackdrop());
-      const response = await pinata.upload.file(file);
-      console.info("pinata", response);
-      return "QmYC32RNLAMPRa8RGWEEHJWMcrnMzJ2Hq8xByupeFPUNtn";
+      // Use a streaming source so the UI thread stays free
+      const source = {
+        path: file.name,
+        content: file.stream(), // <— no blocking read
+      };
+      const client = create({
+        url: process.env.IPFS_NODE,
+      });
+      const response = await client.add(source, {
+        wrapWithDirectory: false, // keep raw CID
+        progress: (bytes) =>
+          dispatch(setBackdropMessage(`Uploading… ${bytesToMB(bytes)} MB`)),
+      });
+      console.log("response", response);
+      return response.cid.toString();
     } catch (error) {
       console.log(error);
-    } finally {
-      dispatch(hideBackdrop());
+      return null;
     }
   }
 
@@ -54,15 +68,10 @@ export const RenderTask = () => {
 
     if (!file) return;
     // Replace with actual blockchain TX or API logic
-    console.log("Creating task with values:", {
-      file,
-      startFrame,
-      endFrame,
-      workers,
-      parsedReward,
-    });
-
+    dispatch(showBackdrop());
+    dispatch(setBackdropMessage("Uploading file..."));
     const cid = await uploadFile();
+    console.log("cid", cid);
     if (!cid) {
       dispatch(
         showSnackbar({
@@ -72,19 +81,31 @@ export const RenderTask = () => {
       );
       return;
     }
-
+    dispatch(setBackdropMessage("Preparing transaction..."));
     try {
       const { keplr } = window;
       const [creator, client] = await getSigningClient(keplr);
+      const isValid2 = isValidBech32(creator);
+      console.log(isValid2);
+      console.log("Creating task with values:", {
+        creator,
+        file,
+        startFrame,
+        endFrame,
+        workers,
+        parsedReward,
+      });
+      dispatch(setBackdropMessage("Submitting transaction..."));
       const response = await client.createVideoRenderingTask(
         creator,
         cid,
         startFrame,
         endFrame,
         workers,
-        "1000000",
+        parsedReward,
         "auto"
       );
+      console.log("response", response);
     } catch (error) {
       console.error(error);
       if (error.message.includes("Account does not exist on chain")) {
@@ -95,7 +116,17 @@ export const RenderTask = () => {
               "Connected wallet doesn't have any JCT Tokens. Add some and then continue.",
           })
         );
+        return;
       }
+      dispatch(
+        showSnackbar({
+          severity: "error",
+          message:
+            "There was an error submitting your transaction. Please refresh and try again.",
+        })
+      );
+    } finally {
+      dispatch(hideBackdrop());
     }
   };
 

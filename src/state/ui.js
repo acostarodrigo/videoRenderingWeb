@@ -5,6 +5,7 @@ export const uiSlice = createSlice({
   initialState: {
     snackbar: { show: false, message: "", severity: "success" },
     showBackdrop: false,
+    backdropMessage: "",
   },
   reducers: {
     showSnackbar: (state, action) => {
@@ -21,10 +22,18 @@ export const uiSlice = createSlice({
     hideBackdrop: (state) => {
       state.showBackdrop = false;
     },
+    setBackdropMessage: (state, action) => {
+      state.backdropMessage = action.payload;
+    },
   },
 });
 
-export const { showSnackbar, hideSnackbar, showBackdrop, hideBackdrop } =
-  uiSlice.actions;
+export const {
+  showSnackbar,
+  hideSnackbar,
+  showBackdrop,
+  hideBackdrop,
+  setBackdropMessage,
+} = uiSlice.actions;
 
 export default uiSlice.reducer;

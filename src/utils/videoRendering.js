@@ -1,8 +1,9 @@
 import store from "state/store";
-import { showSnackbar } from "state/ui";
+import { setBackdropMessage, showSnackbar } from "state/ui";
 import {
   addWorker,
   setAverageRenderTime,
+  setLoading,
   setTasks,
   setTotalFramesRendered,
 } from "state/videoRendering";
@@ -13,6 +14,7 @@ import { saveAs } from "file-saver";
 import { VideoRenderingStargateClient } from "../cosmosClient/dist/stargateClient";
 export const getVideoRenderingTasks = async () => {
   try {
+    store.dispatch(setLoading(true));
     const cosmosClient = await VideoRenderingStargateClient.connect(
       process.env.RPC_URL
     );
@@ -58,19 +60,22 @@ export const getVideoRenderingTasks = async () => {
         message: "Unable to load tasks from Janction. Contact support",
       })
     );
+  } finally {
+    store.dispatch(setLoading(false));
   }
 };
 
 export const IPFSDownload = async (cids) => {
   const zip = new JSZip();
   const ipfs = create({ url: process.env.IPFS_NODE }); // Adjust if needed
-
+  store.dispatch(setBackdropMessage("Connecting to IPFS instance..."));
   for (const dirCid of cids) {
     for await (const file of ipfs.ls(dirCid)) {
       if (file.type !== "file") continue; // Skip directories, only process files
 
       const fileChunks = [];
       for await (const chunk of ipfs.cat(file.cid)) {
+        store.dispatch(setBackdropMessage(`Downloading file ${file.name}...`));
         fileChunks.push(chunk);
       }
       const fileContent = new Uint8Array(Buffer.concat(fileChunks));
@@ -80,6 +85,7 @@ export const IPFSDownload = async (cids) => {
     }
   }
 
+  store.dispatch(setBackdropMessage(`Generating zip file...`));
   const zipBlob = await zip.generateAsync({ type: "blob" });
   saveAs(zipBlob, "files.zip"); // Trigger download
 };

@@ -53,7 +53,7 @@ export const SolutionCard = ({ task }) => {
           fullWidth
           onClick={handleDownload}
           variant="contained"
-          // disabled={address != task.requester}
+          disabled={address != task.requester}
         >
           {" "}
           Download

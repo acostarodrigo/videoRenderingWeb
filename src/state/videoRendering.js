@@ -7,6 +7,7 @@ export const videoRenderingSlice = createSlice({
     workers: [],
     averageRenderTime: 0,
     totalFramesRendered: 0,
+    loading: true,
   },
   reducers: {
     setTasks: (state, action) => {
@@ -23,6 +24,9 @@ export const videoRenderingSlice = createSlice({
     setTotalFramesRendered: (state, action) => {
       state.totalFramesRendered = action.payload;
     },
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
   },
 });
 
@@ -31,6 +35,7 @@ export const {
   addWorker,
   setAverageRenderTime,
   setTotalFramesRendered,
+  setLoading,
 } = videoRenderingSlice.actions;
 
 export default videoRenderingSlice.reducer;

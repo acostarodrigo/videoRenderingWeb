@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { create } from "ipfs-http-client";
 import { ethers } from "ethers";
 import {
@@ -23,8 +23,8 @@ import {
 } from "state/ui";
 import { ConnectWalletButton } from "components/ConnectWalletButton";
 import { getSigningClient } from "utils/web3";
-import { CreateTaskButton } from "components/CreateTaskButton";
 import { isValidBech32 } from "utils/address";
+import { MyTasks } from "components/MyTasks";
 
 export const RenderTask = () => {
   const dispatch = useDispatch();
@@ -34,6 +34,17 @@ export const RenderTask = () => {
   const [endFrame, setEndFrame] = useState(250);
   const [workers, setWorkers] = useState(10);
   const [reward, setReward] = useState("");
+  const [balance, setBalance] = useState(0);
+
+  const getBalance = async () => {
+    const { keplr } = window;
+    const [creator, client] = await getSigningClient(keplr);
+    const denom = await client.getBalance(creator, "jct");
+    setBalance(Number(denom?.amount || 0));
+  };
+  useEffect(() => {
+    if (address) getBalance();
+  }, [address]);
 
   function bytesToMB(b) {
     return (b / 1024 / 1024).toFixed(1);
@@ -54,7 +65,6 @@ export const RenderTask = () => {
         progress: (bytes) =>
           dispatch(setBackdropMessage(`Uploading… ${bytesToMB(bytes)} MB`)),
       });
-      console.log("response", response);
       return response.cid.toString();
     } catch (error) {
       console.log(error);
@@ -85,7 +95,7 @@ export const RenderTask = () => {
     try {
       const { keplr } = window;
       const [creator, client] = await getSigningClient(keplr);
-      console.log("creator from client", creator);
+
       const isValid = isValidBech32(creator);
       if (!isValid) throw new Error("Address is not valid");
 
@@ -231,6 +241,7 @@ export const RenderTask = () => {
                     type="submit"
                     variant="contained"
                     size="large"
+                    disabled={balance == 0}
                     fullWidth
                   >
                     Submit Render Task
@@ -240,6 +251,8 @@ export const RenderTask = () => {
             </form>
           )}
         </Paper>
+
+        {address && <MyTasks />}
       </Container>
       <Footer />
     </>

@@ -37,7 +37,7 @@ export const CreateTaskButton = () => {
   const [open, setOpen] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const initialState = {
-    cid: "QmYC32RNLAMPRa8RGWEEHJWMcrnMzJ2Hq8xByupeFPUNtn",
+    cid: "",
     startFrame: 0,
     endFrame: 0,
     threads: 0,
@@ -66,7 +66,7 @@ export const CreateTaskButton = () => {
         data.reward.toString().replace(".", ""),
         "auto"
       );
-      
+
       dispatch(
         showSnackbar({
           severity: "success",

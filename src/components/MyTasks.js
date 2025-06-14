@@ -22,14 +22,13 @@ export const MyTasks = () => {
       </Typography>
       {loading ? (
         <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
-            <CircularProgress />
-
+          <CircularProgress />
         </Box>
       ) : (
         <>
           {myTasks.length == 0 ? (
             <Typography variant="body" textAlign={"center"}>
-              No tasks created. Refresh to update.
+              You don't have any tasks.
             </Typography>
           ) : (
             <>

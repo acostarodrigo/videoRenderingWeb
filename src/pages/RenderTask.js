@@ -46,31 +46,31 @@ export const RenderTask = () => {
     if (address) getBalance();
   }, [address]);
 
-  function bytesToMB(b) {
-    return (b / 1024 / 1024).toFixed(1);
-  }
-
-  async function uploadFile() {
-    try {
-      // Use a streaming source so the UI thread stays free
-      const source = {
-        path: file.name,
-        content: file.stream(), // <— no blocking read
-      };
-      const client = create({
-        url: process.env.IPFS_NODE,
-      });
-      const response = await client.add(source, {
-        wrapWithDirectory: false, // keep raw CID
-        progress: (bytes) =>
-          dispatch(setBackdropMessage(`Uploading… ${bytesToMB(bytes)} MB`)),
-      });
-      return response.cid.toString();
-    } catch (error) {
-      console.log(error);
-      return null;
+    function bytesToMB(b) {
+      return (b / 1024 / 1024).toFixed(1);
     }
-  }
+
+    async function uploadFile() {
+      try {
+        // Use a streaming source so the UI thread stays free
+        const source = {
+          path: file.name,
+          content: file.stream(), // <— no blocking read
+        };
+        const client = create({
+          url: process.env.IPFS_NODE,
+        });
+        const response = await client.add(source, {
+          wrapWithDirectory: false, // keep raw CID
+          progress: (bytes) =>
+            dispatch(setBackdropMessage(`Uploading… ${bytesToMB(bytes)} MB`)),
+        });
+        return response.cid.toString();
+      } catch (error) {
+        console.log(error);
+        return null;
+      }
+    }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -89,6 +89,7 @@ export const RenderTask = () => {
           message: "There was an error uploading your file. Please try again.",
         })
       );
+      dispatch(hideBackdrop());
       return;
     }
     dispatch(setBackdropMessage("Preparing transaction..."));

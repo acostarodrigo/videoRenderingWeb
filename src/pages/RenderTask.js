@@ -10,7 +10,11 @@ import {
   Container,
   Grid,
   InputAdornment,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { TopBar } from "components/TopBar";
 import { Footer } from "views/Footer";
 import { NumericFormat } from "react-number-format";
@@ -33,7 +37,7 @@ export const RenderTask = () => {
   const [startFrame, setStartFrame] = useState(1);
   const [endFrame, setEndFrame] = useState(250);
   const [workers, setWorkers] = useState(10);
-  const [reward, setReward] = useState("");
+  const [reward, setReward] = useState("1.00");
   const [balance, setBalance] = useState(0);
 
   const getBalance = async () => {
@@ -46,31 +50,31 @@ export const RenderTask = () => {
     if (address) getBalance();
   }, [address]);
 
-    function bytesToMB(b) {
-      return (b / 1024 / 1024).toFixed(1);
-    }
+  function bytesToMB(b) {
+    return (b / 1024 / 1024).toFixed(1);
+  }
 
-    async function uploadFile() {
-      try {
-        // Use a streaming source so the UI thread stays free
-        const source = {
-          path: file.name,
-          content: file.stream(), // <— no blocking read
-        };
-        const client = create({
-          url: process.env.IPFS_NODE,
-        });
-        const response = await client.add(source, {
-          wrapWithDirectory: false, // keep raw CID
-          progress: (bytes) =>
-            dispatch(setBackdropMessage(`Uploading… ${bytesToMB(bytes)} MB`)),
-        });
-        return response.cid.toString();
-      } catch (error) {
-        console.log(error);
-        return null;
-      }
+  async function uploadFile() {
+    try {
+      // Use a streaming source so the UI thread stays free
+      const source = {
+        path: file.name,
+        content: file.stream(), // <— no blocking read
+      };
+      const client = create({
+        url: process.env.IPFS_NODE,
+      });
+      const response = await client.add(source, {
+        wrapWithDirectory: false, // keep raw CID
+        progress: (bytes) =>
+          dispatch(setBackdropMessage(`Uploading… ${bytesToMB(bytes)} MB`)),
+      });
+      return response.cid.toString();
+    } catch (error) {
+      console.log(error);
+      return null;
     }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -204,39 +208,50 @@ export const RenderTask = () => {
                     required
                   />
                 </Grid>
+                <Grid item xs={12}>
+                  <Accordion>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                      <Typography component="span">Advanced Options</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Grid container direction={"row"} spacing={4}>
+                        <Grid item xs={6}>
+                          <TextField
+                            fullWidth
+                            label="Threads / Workers"
+                            type="number"
+                            value={workers}
+                            onChange={(e) => setWorkers(+e.target.value)}
+                            required
+                          />
+                        </Grid>
 
-                <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    label="Threads / Workers"
-                    type="number"
-                    value={workers}
-                    onChange={(e) => setWorkers(+e.target.value)}
-                    required
-                  />
+                        <Grid item xs={6}>
+                          <NumericFormat
+                            customInput={TextField}
+                            decimalScale={6}
+                            fixedDecimalScale
+                            value={reward}
+                            valueIsNumericString
+                            placeholder="JCT Amount"
+                            label="Reward in JCT"
+                            required
+                            onChange={(e) => setReward(+e.target.value)}
+                            type="number"
+                            fullWidth
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  JCT
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                        </Grid>
+                      </Grid>
+                    </AccordionDetails>
+                  </Accordion>
                 </Grid>
-
-                <Grid item xs={6}>
-                  <NumericFormat
-                    customInput={TextField}
-                    decimalScale={6}
-                    fixedDecimalScale
-                    value={reward}
-                    valueIsNumericString
-                    placeholder="JCT Amount"
-                    label="Reward in JCT"
-                    required
-                    onChange={(e) => setReward(+e.target.value)}
-                    type="number"
-                    fullWidth
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">JCT</InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
-
                 <Grid item xs={12}>
                   <Button
                     type="submit"

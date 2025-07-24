@@ -1,3 +1,6 @@
 [submodule "src/cosmosClient"]
 	path = src/cosmosClient
 	url = https://github.com/acostarodrigo/videoRenderingClient.git
+[submodule "src/audioStemClient"]
+	path = src/audioStemClient
+	url = https://github.com/acostarodrigo/audioStemClient.git

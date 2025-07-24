@@ -1,5 +1,22 @@
+import { AudioStemSigningStargateClient } from "../audioStemClient/dist/signingStargateClient";
 import { VideoRenderingSigningStargateClient } from "../cosmosClient/dist/signingStargateClient";
 import { GasPrice } from "@cosmjs/stargate";
+
+export const getAudioStemSigningClient = async (keplr) => {
+  await keplr.experimentalSuggestChain(getChainInfo());
+  await keplr.enable(videoRenderingChainId);
+  const offlineSigner = keplr.getOfflineSigner(videoRenderingChainId);
+  const accounts = await offlineSigner.getAccounts();
+  const creator = accounts[0].address.trim();
+  const signingClient = await AudioStemSigningStargateClient.connectWithSigner(
+    process.env.RPC_URL,
+    offlineSigner,
+    {
+      gasPrice: GasPrice.fromString("0jct"),
+    }
+  );
+  return [creator, signingClient];
+};
 
 export const getSigningClient = async (keplr) => {
   await keplr.experimentalSuggestChain(getChainInfo());

@@ -68,6 +68,11 @@ export const TopBar = () => {
               </Button>
             </Grid>
             <Grid item xs={12} md={2}>
+              <Button color="primary" component={Link} to={"/audio-stem"}>
+                Audio Stem
+              </Button>
+            </Grid>
+            <Grid item xs={12} md={2}>
               <Button color="primary" component={Link} to={"/explorer"}>
                 Rendering Explorer
               </Button>

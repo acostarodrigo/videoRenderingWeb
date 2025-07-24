@@ -14,6 +14,7 @@ import { RenderTask } from "pages/RenderTask";
 import { HowItWorks } from "pages/HowItWorks";
 import { Join } from "pages/Join";
 import Faucet from "pages/Faucet";
+import { AudioStemTask } from "pages/AudioStemTask";
 
 function App() {
   useEffect(() => {
@@ -27,6 +28,7 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route exact path="/explorer" element={<RenderingExplorer />} />
           <Route exact path="/render" element={<RenderTask />} />
+          <Route exact path="/audio-stem" element={<AudioStemTask />} />
           <Route exact path="/join" element={<Join />} />
           <Route exact path="/how" element={<HowItWorks />} />
           <Route exact path="/faucet" element={<Faucet />} />

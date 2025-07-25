@@ -29,6 +29,7 @@ import { ConnectWalletButton } from "components/ConnectWalletButton";
 import { getAudioStemSigningClient, getSigningClient } from "utils/web3";
 import { isValidBech32 } from "utils/address";
 import { MyTasks } from "components/MyTasks";
+import { MyAudioStemTasks } from "components/MyAudioStemTasks";
 
 export const AudioStemTask = () => {
   const dispatch = useDispatch();
@@ -223,7 +224,7 @@ export const AudioStemTask = () => {
           )}
         </Paper>
 
-        {address && <MyTasks />}
+        {address && <MyAudioStemTasks />}
       </Container>
       <Footer />
     </>

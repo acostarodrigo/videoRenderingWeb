@@ -15,10 +15,12 @@ import { HowItWorks } from "pages/HowItWorks";
 import { Join } from "pages/Join";
 import Faucet from "pages/Faucet";
 import { AudioStemTask } from "pages/AudioStemTask";
+import { getAudioStemTasks } from "utils/audioStem";
 
 function App() {
   useEffect(() => {
     getVideoRenderingTasks();
+    getAudioStemTasks();
   }, []);
 
   return (

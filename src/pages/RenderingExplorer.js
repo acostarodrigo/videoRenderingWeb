@@ -87,7 +87,7 @@ export const RenderingExplorer = () => {
                   setHideCompletedAudioStem((current) => !current)
                 }
                 defaultChecked
-                color="warning"
+                color="success"
               />
               {audioStemTasks
                 .filter((val) =>

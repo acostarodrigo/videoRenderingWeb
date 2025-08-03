@@ -39,6 +39,7 @@ export const AudioStemTask = () => {
   const [balance, setBalance] = useState(0);
   const [instrument, setInstrument] = useState("all");
   const [outputFormat, setOutputFormat] = useState("wav");
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   const getBalance = async () => {
     const { keplr } = window;
@@ -174,13 +175,33 @@ export const AudioStemTask = () => {
                       type="file"
                       accept=".mp3"
                       hidden
-                      onChange={(e) => setFile(e.target.files[0])}
+                      onChange={(e) => {
+                        const selected = e.target.files[0];
+                        setFile(selected);
+                        if (selected) {
+                          const objectUrl = URL.createObjectURL(selected);
+                          setPreviewUrl(objectUrl);
+                        } else {
+                          setPreviewUrl(null);
+                        }
+                      }}
                     />
                   </Button>
                   {file && (
-                    <Typography variant="body2" sx={{ mt: 1 }}>
-                      Selected: {file.name}
-                    </Typography>
+                    <>
+                      <Typography variant="body2" sx={{ mt: 1 }}>
+                        Selected: {file.name}
+                      </Typography>
+                      {previewUrl && (
+                        <Box sx={{ mt: 2 }}>
+                          <audio
+                            controls
+                            src={previewUrl}
+                            style={{ width: "100%" }}
+                          />
+                        </Box>
+                      )}
+                    </>
                   )}
                 </Grid>
 

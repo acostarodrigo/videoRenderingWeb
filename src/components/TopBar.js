@@ -74,7 +74,7 @@ export const TopBar = () => {
             </Grid>
             <Grid item xs={12} md={2}>
               <Button color="primary" component={Link} to={"/explorer"}>
-                Rendering Explorer
+                Task Explorer
               </Button>
             </Grid>
           </Grid>

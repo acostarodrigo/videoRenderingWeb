@@ -11,10 +11,13 @@ import {
 import { TopBar } from "components/TopBar";
 import VideoRenderingTaskCard from "components/VideoRenderingTaskCard";
 import { Link } from "react-router-dom";
+import AudioStemTaskCard from "components/AudioStemTaskCard";
 
 export const RenderingExplorer = () => {
   const { tasks } = useSelector((state) => state.videoRendering);
+  const { tasks: audioStemTasks } = useSelector((state) => state.audioStem);
   const [hideCompleted, setHideCompleted] = useState(true);
+  const [hideCompletedAudioStem, setHideCompletedAudioStem] = useState(true);
 
   const handleChange = () => {
     setHideCompleted((current) => !current);
@@ -38,34 +41,70 @@ export const RenderingExplorer = () => {
             the blockchain
           </Typography>
         </Box>
-        {tasks?.length > 0 ? (
-          <>
-            Hide Completed
-            <Switch
-              checked={hideCompleted}
-              onChange={handleChange}
-              defaultChecked
-              color="warning"
-            />
-            {tasks
-              .filter((val) =>
-                hideCompleted
-                  ? val.completed == false
-                  : val.completed == true || val.completed == false
-              )
-              .map((task, index) => (
-                <VideoRenderingTaskCard
-                  task={task}
-                  key={index}
-                  explorer={true}
-                />
-              ))}
-          </>
-        ) : (
-          <Box textAlign={"center"} margin={10} padding={10}>
-            <CircularProgress />
-          </Box>
-        )}
+        <Box marginTop={4}>
+          <Typography variant="h4" textAlign={"center"}>
+            Video Rendering
+          </Typography>
+          {tasks?.length > 0 ? (
+            <>
+              Hide Completed
+              <Switch
+                checked={hideCompleted}
+                onChange={handleChange}
+                defaultChecked
+                color="warning"
+              />
+              {tasks
+                .filter((val) =>
+                  hideCompleted
+                    ? val.completed == false
+                    : val.completed == true || val.completed == false
+                )
+                .map((task, index) => (
+                  <VideoRenderingTaskCard
+                    task={task}
+                    key={index}
+                    explorer={true}
+                  />
+                ))}
+            </>
+          ) : (
+            <Box textAlign={"center"} margin={10} padding={10}>
+              <CircularProgress />
+            </Box>
+          )}
+        </Box>
+        <Box marginTop={4}>
+          <Typography variant="h4" textAlign={"center"}>
+            Audio Stem
+          </Typography>
+          {tasks?.length > 0 ? (
+            <>
+              Hide Completed
+              <Switch
+                checked={hideCompletedAudioStem}
+                onChange={() =>
+                  setHideCompletedAudioStem((current) => !current)
+                }
+                defaultChecked
+                color="warning"
+              />
+              {audioStemTasks
+                .filter((val) =>
+                  hideCompletedAudioStem
+                    ? val.completed == false
+                    : val.completed == true || val.completed == false
+                )
+                .map((task, index) => (
+                  <AudioStemTaskCard task={task} key={index} explorer={true} />
+                ))}
+            </>
+          ) : (
+            <Box textAlign={"center"} margin={10} padding={10}>
+              <CircularProgress />
+            </Box>
+          )}
+        </Box>
       </Container>
       <Footer />
     </>

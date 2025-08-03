@@ -105,7 +105,14 @@ export const AudioStemTask = () => {
       if (!isValid) throw new Error("Address is not valid");
 
       dispatch(setBackdropMessage("Submitting transaction..."));
-      await client.createAudioStemTask(creator, cid, parsedReward, "auto");
+      await client.createAudioStemTask(
+        creator,
+        cid,
+        instrument,
+        outputFormat == "wav" ? false : true,
+        parsedReward,
+        "auto"
+      );
     } catch (error) {
       console.error("error broadcast", error);
       if (error.message.includes("Account does not exist on chain")) {

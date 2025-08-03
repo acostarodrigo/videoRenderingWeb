@@ -37,6 +37,8 @@ export const AudioStemTask = () => {
   const [file, setFile] = useState(null);
   const [reward, setReward] = useState("1.00");
   const [balance, setBalance] = useState(0);
+  const [instrument, setInstrument] = useState("all");
+  const [outputFormat, setOutputFormat] = useState("wav");
 
   const getBalance = async () => {
     const { keplr } = window;
@@ -181,7 +183,7 @@ export const AudioStemTask = () => {
                       <Typography component="span">Advanced Options</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                      <Grid container direction={"row"} spacing={4}>
+                      <Grid container spacing={4}>
                         <Grid item xs={12}>
                           <NumericFormat
                             customInput={TextField}
@@ -203,6 +205,37 @@ export const AudioStemTask = () => {
                               ),
                             }}
                           />
+                        </Grid>
+
+                        <Grid item xs={12} sm={6}>
+                          <TextField
+                            select
+                            label="Instrument"
+                            value={instrument}
+                            onChange={(e) => setInstrument(e.target.value)}
+                            fullWidth
+                            SelectProps={{ native: true }}
+                          >
+                            <option value="all">All</option>
+                            <option value="drums">Drums</option>
+                            <option value="bass">Bass</option>
+                            <option value="voice">Voice</option>
+                            <option value="others">Others</option>
+                          </TextField>
+                        </Grid>
+
+                        <Grid item xs={12} sm={6}>
+                          <TextField
+                            select
+                            label="Output Format"
+                            value={outputFormat}
+                            onChange={(e) => setOutputFormat(e.target.value)}
+                            fullWidth
+                            SelectProps={{ native: true }}
+                          >
+                            <option value="wav">.wav</option>
+                            <option value="mp3">.mp3</option>
+                          </TextField>
                         </Grid>
                       </Grid>
                     </AccordionDetails>

@@ -30,10 +30,10 @@ export const Home = () => {
         }}
       >
         <Typography variant="h2" fontWeight="bold" gutterBottom>
-          Decentralized Video Rendering
+          Decentralized Computing Power
         </Typography>
         <Typography variant="h5">
-          Render frames. Earn crypto. Compete fairly.
+          Render animations. Stem audio. Earn crypto. Compete fairly.
         </Typography>
       </Box>
 
@@ -45,14 +45,16 @@ export const Home = () => {
           What We’re Building
         </Typography>
         <Typography variant="body1" paragraph>
-          A decentralized rendering network that rewards speed and honesty.
+          A decentralized computing power network that rewards speed and
+          honesty.
         </Typography>
         <Typography variant="body1" paragraph>
-          Anyone with a GPU can compete to render frames of animation and earn
-          crypto. The fastest and most honest nodes win rewards.
+          Anyone with a CPU / GPU can compete to render frames of animation or
+          stem audio and earn crypto. The fastest and most honest nodes win
+          rewards.
         </Typography>
         <Typography variant="body1">
-          Transparency, speed, and decentralization—at the core of every pixel.
+          Transparency, speed, and decentralization—at the core of every byte.
         </Typography>
       </Box>
 

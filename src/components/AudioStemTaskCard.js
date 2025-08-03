@@ -15,10 +15,12 @@ import { shortenAddress } from "utils/misc";
 import { VideoRenderingThreadCard } from "./VideoRenderingThreadCard";
 import { SolutionCard } from "./SolutionCard";
 import { AudioStemThreadCard } from "./AudioStemThreadCard";
+import { AudioStemSolutionCard } from "./AudioStemSolutionCard";
 
 export default function AudioStemTaskCard({ task, explorer = true }) {
   const [expanded, setExpanded] = useState(!task.completed);
   const { address } = useSelector((state) => state.blockchain);
+  console.log("stem task", task);
   return (
     <Accordion expanded={expanded} onChange={() => setExpanded(!expanded)}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -55,7 +57,11 @@ export default function AudioStemTaskCard({ task, explorer = true }) {
             <AudioStemThreadCard thread={thread} key={index} />
           ))}
 
-          {task.completed & !explorer ? <SolutionCard task={task} /> : <></>}
+          {task.completed & !explorer ? (
+            <AudioStemSolutionCard task={task} />
+          ) : (
+            <></>
+          )}
         </>
       </AccordionDetails>
     </Accordion>

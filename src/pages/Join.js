@@ -60,6 +60,8 @@ https://docs.docker.com/get-docker/
               description: "Clone Janction's layer 1 node",
               command: `
 git clone https://github.com/acostarodrigo/janctionVideoRenderingModule.git videoRendering
+git clone https://github.com/acostarodrigo/janctionAudioStemModule.git audioStem
+git clone https://github.com/acostarodrigo/videoUpscaler.git videoUpscaler
 git clone https://github.com/acostarodrigo/janctionLayer1Node.git`,
             },
             {

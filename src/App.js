@@ -17,11 +17,13 @@ import Faucet from "pages/Faucet";
 import { AudioStemTask } from "pages/AudioStemTask";
 import { getAudioStemTasks } from "utils/audioStem";
 import { VideoUpscaleTask } from "pages/VideoUpscaleTask";
+import { getVideoUpscaleTasks } from "utils/videoUpscale";
 
 function App() {
   useEffect(() => {
     getVideoRenderingTasks();
     getAudioStemTasks();
+    getVideoUpscaleTasks();
   }, []);
 
   return (

@@ -3,6 +3,7 @@ import uiReducer from "./ui";
 import blockchainReducer from "./blockchain";
 import videoRenderingReducer from "./videoRendering";
 import audioStemReducer from "./audioStem";
+import videoUpscaleReducer from "./videoUpscale";
 
 export default configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export default configureStore({
     blockchain: blockchainReducer,
     videoRendering: videoRenderingReducer,
     audioStem: audioStemReducer,
+    videoUpscale: videoUpscaleReducer,
   },
 });

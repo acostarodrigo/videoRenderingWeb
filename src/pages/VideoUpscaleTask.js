@@ -33,6 +33,7 @@ import { ConnectWalletButton } from "components/ConnectWalletButton";
 import { getSigningClient, getVideoUpscaleSigningClient } from "utils/web3";
 import { isValidBech32 } from "utils/address";
 import { MyTasks } from "components/MyTasks";
+import { MyVideoUpscaleTasks } from "components/MyVideoUpscaleTasks";
 
 export const VideoUpscaleTask = () => {
   const dispatch = useDispatch();
@@ -294,7 +295,7 @@ export const VideoUpscaleTask = () => {
           )}
         </Paper>
 
-        {address && <MyTasks />}
+        {address && <MyVideoUpscaleTasks />}
       </Container>
       <Footer />
     </>

@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { shortenAddress } from "utils/misc";
 import { VideoUpscaleThreadCard } from "./VideoUpscaleThreadCard";
 import { SolutionCard } from "./SolutionCard";
+import { VideoUpscaleSolutionCard } from "./VideoUpscaleSolutionCard";
 
 export default function VideoUpscaleTaskCard({ task, explorer = true }) {
   const [expanded, setExpanded] = useState(!task.completed);
@@ -54,7 +55,11 @@ export default function VideoUpscaleTaskCard({ task, explorer = true }) {
             <VideoUpscaleThreadCard thread={thread} key={index} />
           ))}
 
-          {task.completed & !explorer ? <SolutionCard task={task} /> : <></>}
+          {task.completed & !explorer ? (
+            <VideoUpscaleSolutionCard task={task} />
+          ) : (
+            <></>
+          )}
         </>
       </AccordionDetails>
     </Accordion>

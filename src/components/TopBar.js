@@ -47,12 +47,12 @@ export const TopBar = () => {
                 Home
               </Button>
             </Grid>
-            <Grid item xs={12} md={2}>
+            <Grid item xs={12} md={1}>
               <Button color="primary" component={Link} to={"/how"}>
                 How it works
               </Button>
             </Grid>
-            <Grid item xs={12} md={2}>
+            <Grid item xs={12} md={1}>
               <Button color="primary" component={Link} to={"/join"}>
                 Join your PC
               </Button>
@@ -62,17 +62,22 @@ export const TopBar = () => {
                 Faucet
               </Button>
             </Grid>
-            <Grid item xs={12} md={2}>
+            <Grid item xs={12} md={1}>
               <Button color="primary" component={Link} to={"/render"}>
                 Render your animation
               </Button>
             </Grid>
-            <Grid item xs={12} md={2}>
+            <Grid item xs={12} md={1}>
               <Button color="primary" component={Link} to={"/audio-stem"}>
                 Audio Stem
               </Button>
             </Grid>
-            <Grid item xs={12} md={2}>
+            <Grid item xs={12} md={1}>
+              <Button color="primary" component={Link} to={"/video-upscale"}>
+                Video Upscale
+              </Button>
+            </Grid>
+            <Grid item xs={12} md={1}>
               <Button color="primary" component={Link} to={"/explorer"}>
                 Task Explorer
               </Button>

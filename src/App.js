@@ -16,6 +16,7 @@ import { Join } from "pages/Join";
 import Faucet from "pages/Faucet";
 import { AudioStemTask } from "pages/AudioStemTask";
 import { getAudioStemTasks } from "utils/audioStem";
+import { VideoUpscaleTask } from "pages/VideoUpscaleTask";
 
 function App() {
   useEffect(() => {
@@ -31,6 +32,7 @@ function App() {
           <Route exact path="/explorer" element={<RenderingExplorer />} />
           <Route exact path="/render" element={<RenderTask />} />
           <Route exact path="/audio-stem" element={<AudioStemTask />} />
+          <Route exact path="/video-upscale" element={<VideoUpscaleTask />} />
           <Route exact path="/join" element={<Join />} />
           <Route exact path="/how" element={<HowItWorks />} />
           <Route exact path="/faucet" element={<Faucet />} />

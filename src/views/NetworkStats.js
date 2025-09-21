@@ -7,8 +7,8 @@ import CountUp from "react-countup";
 const mockStats = {
   totalNodes: 128,
   totalWorkers: 342,
-  averageRenderTime: "1.23s",
-  totalFramesRendered: 98423,
+  averageRenderTime: 2.23,
+  totalFramesRendered: 998423,
   topPerformers: [
     { name: "Node_Alpha", earnings: "$532", avgTime: "0.8s" },
     { name: "Node_Beta", earnings: "$478", avgTime: "1.1s" },
@@ -42,7 +42,7 @@ export const NetworkStats = () => {
                     Total Nodes
                   </Typography>
                   <Typography variant="h5" fontWeight="bold" color={"primary"}>
-                    {workers.length}
+                    {mockStats.totalNodes}
                   </Typography>
                 </CardContent>
               </Card>
@@ -54,7 +54,7 @@ export const NetworkStats = () => {
                     Total Videos rendered
                   </Typography>
                   <Typography variant="h5" fontWeight="bold" color={"primary"}>
-                    <CountUp end={tasks.length} duration={5} />
+                    <CountUp end={mockStats.totalWorkers} duration={5} />
                   </Typography>
                 </CardContent>
               </Card>
@@ -66,7 +66,10 @@ export const NetworkStats = () => {
                     Avg Frame Render Time
                   </Typography>
                   <Typography variant="h5" fontWeight="bold" color={"primary"}>
-                    <CountUp end={averageRenderTime || 0} duration={5} />{" "}
+                    <CountUp
+                      end={mockStats.averageRenderTime || 0}
+                      duration={5}
+                    />{" "}
                     seconds
                   </Typography>
                 </CardContent>
@@ -79,7 +82,7 @@ export const NetworkStats = () => {
                     Frames Rendered
                   </Typography>
                   <Typography variant="h5" fontWeight="bold" color={"primary"}>
-                    <CountUp end={totalFramesRendered} duration={5} />
+                    <CountUp end={mockStats.totalFramesRendered} duration={5} />
                   </Typography>
                 </CardContent>
               </Card>

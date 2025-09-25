@@ -222,10 +222,11 @@ export const VideoUpscaleTask = () => {
                     <AccordionDetails>
                       <Grid container direction={"row"} spacing={4}>
                         <Grid item xs={6}>
-                          <TextField
+                          <NumericFormat
                             fullWidth
+                            customInput={TextField}
+                            allowNegative={false}
                             label="Start Frame"
-                            type="number"
                             value={startFrame}
                             onChange={(e) => setStartFrame(+e.target.value)}
                             required
@@ -233,20 +234,22 @@ export const VideoUpscaleTask = () => {
                         </Grid>
 
                         <Grid item xs={6}>
-                          <TextField
+                          <NumericFormat
                             fullWidth
+                            customInput={TextField}
                             label="End Frame"
-                            type="number"
+                            allowNegative={false}
                             value={endFrame}
                             onChange={(e) => setEndFrame(+e.target.value)}
                             required
                           />
                         </Grid>
                         <Grid item xs={6}>
-                          <TextField
+                          <NumericFormat
                             fullWidth
+                            customInput={TextField}
+                            allowNegative={false}
                             label="Threads / Workers"
-                            type="number"
                             value={workers}
                             onChange={(e) => setWorkers(+e.target.value)}
                             required
@@ -262,6 +265,7 @@ export const VideoUpscaleTask = () => {
                             valueIsNumericString
                             placeholder="JCT Amount"
                             label="Reward in JCT"
+                            allowNegative={false}
                             required
                             onChange={(e) => setReward(+e.target.value)}
                             type="number"

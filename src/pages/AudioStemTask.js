@@ -218,6 +218,10 @@ export const AudioStemTask = () => {
                             decimalScale={6}
                             allowNegative={false}
                             fixedDecimalScale
+                            isAllowed={(values) => {
+                              const { floatValue } = values;
+                              return floatValue > 0;
+                            }}
                             value={reward}
                             valueIsNumericString
                             placeholder="JCT Amount"

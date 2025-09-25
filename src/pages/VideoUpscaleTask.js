@@ -239,6 +239,10 @@ export const VideoUpscaleTask = () => {
                             customInput={TextField}
                             label="End Frame"
                             allowNegative={false}
+                            isAllowed={(values) => {
+                              const { floatValue } = values;
+                              return floatValue > startFrame;
+                            }}
                             value={endFrame}
                             onChange={(e) => setEndFrame(+e.target.value)}
                             required
@@ -249,6 +253,10 @@ export const VideoUpscaleTask = () => {
                             fullWidth
                             customInput={TextField}
                             allowNegative={false}
+                            isAllowed={(values) => {
+                              const { floatValue } = values;
+                              return floatValue > 0;
+                            }}
                             label="Threads / Workers"
                             value={workers}
                             onChange={(e) => setWorkers(+e.target.value)}
@@ -265,6 +273,10 @@ export const VideoUpscaleTask = () => {
                             valueIsNumericString
                             placeholder="JCT Amount"
                             label="Reward in JCT"
+                            isAllowed={(values) => {
+                              const { floatValue } = values;
+                              return floatValue > startFrame;
+                            }}
                             allowNegative={false}
                             required
                             onChange={(e) => setReward(+e.target.value)}

@@ -205,6 +205,10 @@ export const RenderTask = () => {
                     customInput={TextField}
                     allowNegative={false}
                     label="End Frame"
+                    isAllowed={(values) => {
+                      const { floatValue } = values;
+                      return floatValue > startFrame;
+                    }}
                     value={endFrame}
                     onChange={(e) => setEndFrame(+e.target.value)}
                     required
@@ -223,6 +227,10 @@ export const RenderTask = () => {
                             customInput={TextField}
                             allowNegative={false}
                             label="Threads / Workers"
+                            isAllowed={(values) => {
+                              const { floatValue } = values;
+                              return floatValue > 0;
+                            }}
                             value={workers}
                             onChange={(e) => setWorkers(+e.target.value)}
                             required
@@ -235,6 +243,10 @@ export const RenderTask = () => {
                             decimalScale={6}
                             fixedDecimalScale
                             value={reward}
+                            isAllowed={(values) => {
+                              const { floatValue } = values;
+                              return floatValue > 0;
+                            }}
                             allowNegative={false}
                             valueIsNumericString
                             placeholder="JCT Amount"

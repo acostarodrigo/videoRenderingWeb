@@ -188,10 +188,11 @@ export const RenderTask = () => {
                 </Grid>
 
                 <Grid item xs={6}>
-                  <TextField
+                  <NumericFormat
                     fullWidth
+                    customInput={TextField}
+                    allowNegative={false}
                     label="Start Frame"
-                    type="number"
                     value={startFrame}
                     onChange={(e) => setStartFrame(+e.target.value)}
                     required
@@ -199,10 +200,11 @@ export const RenderTask = () => {
                 </Grid>
 
                 <Grid item xs={6}>
-                  <TextField
+                  <NumericFormat
                     fullWidth
+                    customInput={TextField}
+                    allowNegative={false}
                     label="End Frame"
-                    type="number"
                     value={endFrame}
                     onChange={(e) => setEndFrame(+e.target.value)}
                     required
@@ -216,10 +218,11 @@ export const RenderTask = () => {
                     <AccordionDetails>
                       <Grid container direction={"row"} spacing={4}>
                         <Grid item xs={6}>
-                          <TextField
+                          <NumericFormat
                             fullWidth
+                            customInput={TextField}
+                            allowNegative={false}
                             label="Threads / Workers"
-                            type="number"
                             value={workers}
                             onChange={(e) => setWorkers(+e.target.value)}
                             required
@@ -232,6 +235,7 @@ export const RenderTask = () => {
                             decimalScale={6}
                             fixedDecimalScale
                             value={reward}
+                            allowNegative={false}
                             valueIsNumericString
                             placeholder="JCT Amount"
                             label="Reward in JCT"

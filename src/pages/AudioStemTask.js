@@ -216,6 +216,7 @@ export const AudioStemTask = () => {
                           <NumericFormat
                             customInput={TextField}
                             decimalScale={6}
+                            allowNegative={false}
                             fixedDecimalScale
                             value={reward}
                             valueIsNumericString

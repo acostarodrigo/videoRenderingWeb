@@ -1,7 +1,8 @@
 {
   "projects": {
     "default": "layer1-dev",
-    "dev": "layer1-dev"
+    "dev": "layer1-dev",
+    "prod": "layer1-prod"
   },
   "targets": {},
   "etags": {},

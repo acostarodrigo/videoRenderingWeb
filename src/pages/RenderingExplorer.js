@@ -12,12 +12,18 @@ import { TopBar } from "components/TopBar";
 import VideoRenderingTaskCard from "components/VideoRenderingTaskCard";
 import { Link } from "react-router-dom";
 import AudioStemTaskCard from "components/AudioStemTaskCard";
+import VideoUpscaleTaskCard from "components/VideoUpscaleTaskCard";
 
 export const RenderingExplorer = () => {
   const { tasks } = useSelector((state) => state.videoRendering);
   const { tasks: audioStemTasks } = useSelector((state) => state.audioStem);
+  const { tasks: videoUpscaleTasks } = useSelector(
+    (state) => state.videoUpscale
+  );
   const [hideCompleted, setHideCompleted] = useState(true);
   const [hideCompletedAudioStem, setHideCompletedAudioStem] = useState(true);
+  const [hideCompletedVideoUpscale, setHideCompletedVideoUpscale] =
+    useState(true);
 
   const handleChange = () => {
     setHideCompleted((current) => !current);
@@ -97,6 +103,41 @@ export const RenderingExplorer = () => {
                 )
                 .map((task, index) => (
                   <AudioStemTaskCard task={task} key={index} explorer={true} />
+                ))}
+            </>
+          ) : (
+            <Box textAlign={"center"} margin={10} padding={10}>
+              <CircularProgress />
+            </Box>
+          )}
+        </Box>
+        <Box marginTop={4}>
+          <Typography variant="h4" textAlign={"center"}>
+            Video Upscaler
+          </Typography>
+          {tasks?.length > 0 ? (
+            <>
+              Hide Completed
+              <Switch
+                checked={hideCompletedVideoUpscale}
+                onChange={() =>
+                  setHideCompletedVideoUpscale((current) => !current)
+                }
+                defaultChecked
+                color="success"
+              />
+              {videoUpscaleTasks
+                .filter((val) =>
+                  hideCompletedVideoUpscale
+                    ? val.completed == false
+                    : val.completed == true || val.completed == false
+                )
+                .map((task, index) => (
+                  <VideoUpscaleTaskCard
+                    task={task}
+                    key={index}
+                    explorer={true}
+                  />
                 ))}
             </>
           ) : (

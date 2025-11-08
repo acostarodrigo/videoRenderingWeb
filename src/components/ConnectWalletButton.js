@@ -12,6 +12,8 @@ export const ConnectWalletButton = () => {
   const handleConnectWallet = async () => {
     let keplr;
     keplr = window.keplr;
+
+    console.log(keplr);
     if (!keplr) {
       alert("You need to install Keplr");
       throw new Error("You need to install Keplr");
@@ -19,13 +21,18 @@ export const ConnectWalletButton = () => {
 
     try {
     } catch (error) {
+      console.log(error);
       dispatch(
         showSnackbar({ severity: "warning", message: "Install Keplr wallet!" })
       );
       return;
     }
-    const [creator] = await getSigningClient(keplr);
-    dispatch(setAddress(creator));
+    try {
+      const [creator] = await getSigningClient(keplr);
+      dispatch(setAddress(creator));
+    } catch (error) {
+      console.log("error", error);
+    }
   };
   return (
     <Button
